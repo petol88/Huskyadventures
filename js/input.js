@@ -10,6 +10,9 @@ const Input = (() => {
   const keys = {};
   let sprinting = false; // pidetäänkö sprint-painiketta pohjassa
   let howlQueued = false; // kertalaukaus: ulvonta-painallus odottaa käsittelyä
+  let dashQueued = false; // kertalaukaus: väistö-painallus odottaa käsittelyä
+  let throwQueued = false; // kertalaukaus: lelun heitto odottaa käsittelyä
+  let feedQueued = false; // kertalaukaus: ruokinta-painallus odottaa käsittelyä
 
   // --- Näppäimistö ---
   const keyMap = {
@@ -25,7 +28,10 @@ const Input = (() => {
       e.preventDefault();
     }
     if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') sprinting = true;
-    if (e.code === 'Space') { howlQueued = true; e.preventDefault(); }
+    if (e.code === 'Space') { keys['Space'] = true; howlQueued = true; e.preventDefault(); }
+    if (e.code === 'KeyE') { dashQueued = true; e.preventDefault(); }
+    if (e.code === 'KeyQ') { throwQueued = true; e.preventDefault(); }
+    if (e.code === 'KeyF') { feedQueued = true; e.preventDefault(); }
   });
 
   window.addEventListener('keyup', (e) => {
@@ -34,6 +40,7 @@ const Input = (() => {
       e.preventDefault();
     }
     if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') sprinting = false;
+    if (e.code === 'Space') keys['Space'] = false;
   });
 
   // --- Kosketusohjaus (joystick) ---
@@ -126,7 +133,6 @@ const Input = (() => {
     return sprinting;
   }
 
-  // Palauttaa true kerran ulvonta-painallusta kohden (kertalaukaus)
   function consumeHowl() {
     if (howlQueued) {
       howlQueued = false;
@@ -135,5 +141,29 @@ const Input = (() => {
     return false;
   }
 
-  return { getDirection, isSprinting, consumeHowl };
+  function consumeDash() {
+    if (dashQueued) {
+      dashQueued = false;
+      return true;
+    }
+    return false;
+  }
+
+  function consumeThrow() {
+    if (throwQueued) {
+      throwQueued = false;
+      return true;
+    }
+    return false;
+  }
+
+  function consumeFeed() {
+    if (feedQueued) {
+      feedQueued = false;
+      return true;
+    }
+    return false;
+  }
+
+  return { getDirection, isSprinting, consumeHowl, consumeDash, consumeThrow, consumeFeed, isSpaceHeld };
 })();

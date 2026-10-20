@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Husky Adventures</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=13">
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      alert("VIRHE PELISSÄ:\n" + message + "\nTiedosto: " + source + "\nRivi: " + lineno + "\n\n" + (error ? error.stack : ""));
+      return false;
+    };
+  </script>
 </head>
 <body>
   <div id="game-container">
@@ -15,8 +21,33 @@
       <div class="hud-item">🏆 Taso <span id="level">1</span></div>
       <div class="hud-item">🐾 <span id="progress">0</span>/<span id="goal">8</span></div>
       <div class="hud-item">🦴 Lv <span id="huskyLevel">1</span></div>
+      <div class="hud-item">💎 <span id="gems">0</span></div>
+      <div class="hud-item">🐟 <span id="fish-count">0</span></div>
       <div class="hud-item">❤️ <span id="lives">3</span></div>
+      <div class="hud-item" id="hud-time">⏰ 12:00</div>
+      <div class="hud-item" id="temp-hud" style="display: none;">🌡️ <span id="temp-value">Okei</span></div>
       <button id="mute-btn" class="hud-item" type="button" title="Äänet päälle/pois">🔊</button>
+      <button id="quit-btn" class="hud-item" type="button" title="Lopeta peli">Lopeta ❌</button>
+    </div>
+
+    <!-- Seikkailukompassi -->
+    <div id="adventure-compass" class="hidden">
+      <div id="compass-ring">
+        <div id="compass-card">
+          <div class="compass-dir dir-n">N</div>
+          <div class="compass-dir dir-e">E</div>
+          <div class="compass-dir dir-s">S</div>
+          <div class="compass-dir dir-w">W</div>
+        </div>
+        <div id="compass-needle"></div>
+        <div id="compass-glass"></div>
+      </div>
+    </div>
+
+    <!-- Karttatutka -->
+    <div id="radar-container" class="hidden">
+      <button id="radar-toggle-btn" type="button" title="Tutka päälle/pois">📡</button>
+      <canvas id="radar-canvas" width="120" height="120"></canvas>
     </div>
 
     <!-- Huskyn kokemusmittari -->
@@ -46,23 +77,554 @@
       </div>
     </div>
 
+    <!-- Onnenpyörä -->
+    <div id="luckyspin-overlay" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+      <div id="luckyspin-panel" style="background: rgba(26, 22, 28, 0.98); border: 2px solid #ffca28; box-shadow: 0 0 24px rgba(255, 202, 40, 0.4); border-radius: 20px; padding: 24px; text-align: center; max-width: 320px; width: 90%; position: relative;">
+        <h2 style="color: #ffca28; margin-top: 0; font-size: 22px; font-family: 'Outfit', sans-serif;">🎡 Onnenpyörä</h2>
+        <p style="font-size: 13px; color: #ccc; margin-bottom: 16px; font-family: 'Inter', sans-serif;">Pyöräytä kerran per peli ja voita mahtavia palkintoja!</p>
+        <canvas id="luckyspin-canvas" width="220" height="220" style="display: block; margin: 0 auto 16px auto;"></canvas>
+        <button id="luckyspin-action-btn" style="background: linear-gradient(135deg, #ffd54f, #ffb300); border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; color: #3e2723; font-size: 16px; cursor: pointer; transition: transform 0.1s; width: 100%; box-shadow: 0 4px 10px rgba(255, 179, 0, 0.3);">PYÖRÄYTÄ! 🎡</button>
+        <button id="luckyspin-close-btn" style="background: none; border: none; color: #aaa; text-decoration: underline; margin-top: 12px; cursor: pointer; font-size: 12px;">Sulje</button>
+      </div>
+    </div>
+
+    <!-- Kauppanäyttö -->
+    <div id="shop-overlay" class="hidden">
+      <div id="shop-panel">
+        <h2>💎 Huskyn Jalokivikauppa</h2>
+        <div class="shop-gems-balance">Sinulla on: <span id="shop-gem-count">0</span> 💎</div>
+        
+        <h3>🐺 Skinit (Pysyvät ulkoasut)</h3>
+        <div id="shop-skins-list" class="shop-grid"></div>
+        
+        <h3>🎒 Tavarat (Seuraavalle pelikerralle)</h3>
+        <div id="shop-items-list" class="shop-grid"></div>
+        
+        <h3>🎩 Asusteet (Pysyvät hatut)</h3>
+        <div id="shop-hats-list" class="shop-grid"></div>
+
+        <h3>🐕 Kaverikoiran Skinit (Companion Skins)</h3>
+        <div id="shop-companion-skins-list" class="shop-grid"></div>
+
+        <h3>🎀 Kaverikoiran Asusteet (Companion Hats)</h3>
+        <div id="shop-companion-hats-list" class="shop-grid"></div>
+        
+        <button id="shop-close-btn">Palaa alkuun</button>
+      </div>
+    </div>
+
+    <!-- Mökin parantelunäyttö -->
+    <div id="cabin-overlay" class="hidden">
+      <div id="cabin-panel">
+        <h2>🔨 Mökin Nikkarointipöytä</h2>
+        <div class="shop-gems-balance">Sinulla on: <span id="cabin-gem-count">0</span> 💎</div>
+        <p>Sisusta ja parantele mökkiäsi saavuttaaksesi pysyviä etuja:</p>
+        <div id="cabin-upgrades-list" class="shop-grid"></div>
+        <button id="cabin-close-btn">Sulje työpöytä</button>
+      </div>
+    </div>
+
+    <!-- Matkamuistokaappi Zoom-Modal -->
+    <div id="cabinet-overlay" class="hidden">
+      <div id="cabinet-panel">
+        <h2>🏆 Palkintokaapin Aarteet</h2>
+        <p>Klikkaa matkamuistoa lukeaksesi sen tarinan ja nähdäksesi bonuksen:</p>
+        <div class="cabinet-display-area">
+          <div class="cabinet-shelves-grid" id="cabinet-shelves-grid"></div>
+          <div class="cabinet-lore-card" id="cabinet-lore-card">
+            <div class="lore-placeholder">Valitse matkamuisto kaapista nähdäksesi sen tiedot.</div>
+          </div>
+        </div>
+        <button id="cabinet-close-btn">Sulje kaappi</button>
+      </div>
+    </div>
+
+    <!-- Mökin Gramofonin soitinvalikko -->
+    <div id="gramophone-overlay" class="hidden">
+      <div id="gramophone-panel">
+        <h2>📻 Mökin Gramofoni</h2>
+        <p>Valitse taustamusiikki seikkailujen ja lepohetkien taustalle:</p>
+        <div class="gramophone-container">
+          <div class="gramophone-disc-area">
+            <div class="gramophone-vinyl-disc" id="gramophone-disc">🎵</div>
+            <div class="gramophone-track-info">
+              <div class="track-title" id="gramophone-track-title">Pysäytetty</div>
+              <div class="track-status" id="gramophone-track-status">Valitse levy</div>
+            </div>
+            <div class="gramophone-volume-control" style="margin-top: 15px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>🔊</span>
+              <input type="range" id="gramophone-volume" min="0" max="1" step="0.05" value="0.5" style="width: 100px; accent-color: #ffb300;">
+            </div>
+          </div>
+          <div id="gramophone-tracks-list" class="gramophone-tracks"></div>
+        </div>
+        <button id="gramophone-close-btn">Sulje soitin</button>
+      </div>
+    <!-- Mitalikaappi / Saavutusseinä Zoom-Modal -->
+    <div id="achievements-overlay" class="hidden">
+      <div id="achievements-panel">
+        <h2>🏅 Mitalitaulu & Saavutukset</h2>
+        <p>Täällä näkyvät Huskyn seikkailujen aikana ansaitsemat mitalit ja kunniamaininnat:</p>
+        <div id="achievements-panel-list"></div>
+        <button id="achievements-close-btn">Sulje mitalitaulu</button>
+      </div>
+    </div>
+
+    <!-- Keittopata / Kokkaus Zoom-Modal -->
+    <div id="cooking-overlay" class="hidden">
+      <div id="cooking-panel">
+        <h2>🍲 Nuotioruokailu &amp; Keittokirja</h2>
+        <p>Valmista herkullisia keitoksia keräämistäsi raaka-aineista saadaksesi tehokkaita erikoisvaikutuksia seuraavalle seikkailullesi!</p>
+        <div id="cooking-ingredients-bar" style="display: flex; gap: 10px; justify-content: center; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px; margin-bottom: 12px; font-weight: bold; flex-wrap: wrap;"></div>
+        <div id="cooking-recipes-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; padding-right: 4px;"></div>
+        <button id="cooking-close-btn">Sulje keittopata</button>
+      </div>
+    </div>
+
+    <!-- Metsän Ystävät Ystäväkirja / Lemmikkialbumi Zoom-Modal -->
+    <div id="diary-overlay" class="hidden">
+      <div id="diary-panel">
+        <h2>📔 Metsän Ystävät - Ystäväkirja</h2>
+        <p>Tänne tallentuu villieläinten kesytystilanteesi ja luottamussuhteesi! Syötä metsän eläimille niiden lempiruokia seikkailun aikana nostaaksesi ystävyyttä.</p>
+        <div id="diary-animal-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-height: 320px; overflow-y: auto; padding-right: 6px; margin-bottom: 16px;"></div>
+        <button id="diary-close-btn">Sulje ystäväkirja</button>
+      </div>
+    </div>
+
+    <!-- Viljelylaatikko / Puutarha Zoom-Modal -->
+    <div id="garden-overlay" class="hidden">
+      <div id="garden-panel">
+        <h2>🪴 Mökin Viljelylaatikko</h2>
+        <p>Kasvata omia raaka-aineitasi! Siemenet kasvavat uuden tason seikkailun aikana. Kerää täysikasvuiset kasvit satoa varten!</p>
+        <div id="garden-slots-list" style="display: flex; gap: 14px; justify-content: center; margin: 18px 0;"></div>
+        <button id="garden-close-btn">Sulje puutarha</button>
+      </div>
+    </div>
+
+    <!-- Päivittäiset Seikkailutehtävät Zoom-Modal -->
+    <div id="quests-overlay" class="hidden">
+      <div id="quests-panel">
+        <h2>📜 Seikkailutehtävät &amp; Haasteet</h2>
+        <p>Suorita päivittäisiä tehtäviä seikkailujen aikana ansaitaksesi luita, jalokiviä ja erikoispalkintoja!</p>
+        <div id="quests-daily-date" style="font-size: 13px; color: #ffca28; font-weight: bold; margin-bottom: 12px;"></div>
+        <div id="quests-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 290px; overflow-y: auto; padding-right: 4px; margin-bottom: 14px;"></div>
+        <div id="quests-master-box" style="background: rgba(255, 215, 0, 0.12); border: 1.5px dashed #ffd54f; border-radius: 10px; padding: 10px; margin-bottom: 14px; text-align: center;">
+          <div style="font-weight: bold; color: #fff; margin-bottom: 4px;">🏆 Päivän Pääpalkinto</div>
+          <div id="quests-master-status" style="font-size: 13px; color: #b0bec5;">Suorita kaikki 3 tehtävää avataksesi suuren aarrearkun (+15 💎)!</div>
+          <button id="quests-claim-master-btn" class="hidden" style="margin-top: 8px; background: linear-gradient(135deg, #ffd700, #ff8f00); color: #000; border: none; font-weight: bold; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Avaa Mestariarkku! 🎁</button>
+        </div>
+        <button id="quests-close-btn">Sulje tehtävät</button>
+      </div>
+    </div>
+
+    <!-- Revontulien Toivomuskaivo Modal -->
+    <div id="wishing-well-overlay" class="hidden">
+      <div id="wishing-well-panel">
+        <h2>🌌 Revontulien Toivomuskaivo</h2>
+        <p>Heitä kaivoon kimmeltäviä luita tai jalokiviä ja vastaanota Pohjolan maaginen siunaus!</p>
+        <div id="well-resources" style="display: flex; gap: 16px; justify-content: center; margin: 12px 0; font-size: 14px; font-weight: bold; color: #ffeb3b;">
+          <span>🦴 Luut: <span id="well-bones-count">0</span></span>
+          <span>💎 Jalokivet: <span id="well-gems-count">0</span></span>
+        </div>
+        <div class="wish-options-container" style="display: flex; gap: 14px; justify-content: center; margin-bottom: 16px;">
+          <div class="wish-card">
+            <div class="wish-card-icon">🦴</div>
+            <div class="wish-card-title">Tavallinen Toivomus</div>
+            <div class="wish-card-cost">Hinta: 10 Luuta 🦴</div>
+            <div class="wish-card-desc">Satunnainen raaka-aine, lisäelämiä tai jalokivilöytö!</div>
+            <button id="well-wish-bones-btn" class="wish-btn">Heitä 10 Luuta</button>
+          </div>
+          <div class="wish-card special">
+            <div class="wish-card-icon">🌌✨</div>
+            <div class="wish-card-title">Revontulten Suuri Toivomus</div>
+            <div class="wish-card-cost" style="color: #00e5ff;">Hinta: 2 Jalokiveä 💎</div>
+            <div class="wish-card-desc">Revontulten vauhtiaura (+30%), kultaorava tai jopa 8 💎!</div>
+            <button id="well-wish-gems-btn" class="wish-btn special">Heitä 2 Jalokiveä</button>
+          </div>
+        </div>
+        <div id="well-result-banner" style="min-height: 24px; font-size: 13px; font-weight: bold; color: #81c784; margin-bottom: 12px;"></div>
+        <button id="wishing-well-close-btn">Sulje kaivo</button>
+      </div>
+    </div>
+
+    <!-- Agility-Esteradan Tulosruutu Modal -->
+    <div id="agility-finish-overlay" class="hidden">
+      <div id="agility-finish-panel">
+        <h2>🐕🏁 Agility-Esteradan Tulokset</h2>
+        <div id="agility-medal-display" style="font-size: 54px; margin: 8px 0; filter: drop-shadow(0 0 16px rgba(255,215,0,0.6));">🥇</div>
+        <div id="agility-medal-title" style="font-size: 20px; font-weight: bold; color: #ffd700; margin-bottom: 8px;">KULTAMITALI!</div>
+        <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 14px; text-align: left; max-width: 320px; margin-left: auto; margin-right: auto;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: #b0bec5;">Rata-aika:</span>
+            <span id="agility-stat-time" style="font-weight: bold; color: #fff;">0.00s</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: #b0bec5;">Aikasakot:</span>
+            <span id="agility-stat-penalties" style="font-weight: bold; color: #ff5252;">+0.0s</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 6px;">
+            <span style="color: #b0bec5;">Loppuaika:</span>
+            <span id="agility-stat-final" style="font-weight: bold; color: #ffeb3b; font-size: 16px;">0.00s</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #b0bec5;">Paras ennätys:</span>
+            <span id="agility-stat-best" style="font-weight: bold; color: #69f0ae;">--</span>
+          </div>
+        </div>
+        <div id="agility-rewards-text" style="font-size: 14px; color: #ffca28; font-weight: bold; margin-bottom: 16px;">Palkinto: +15 💎 &amp; +60 🦴 &amp; +40 XP!</div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="agility-retry-btn" style="background: linear-gradient(135deg, #1e7a30, #3ca854); color: #fff; border: none; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer;">Juokse uudestaan 🔄</button>
+          <button id="agility-exit-btn" style="background: #37474f; color: #fff; border: none; font-weight: bold; padding: 10px 18px; border-radius: 8px; cursor: pointer;">Palaa takapihalle 🏕️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Koirakoulutus & Lahjakkuuspuu Modal -->
+    <div id="talents-overlay" class="hidden">
+      <div id="talents-panel">
+        <h2>🎓 Koirakoulu &amp; Lahjakkuuspuu</h2>
+        <p>Kouluta Huskylle pysyviä mestaritaitoja käyttämällä seikkailuissa keräämiäsi luita ja jalokiviä!</p>
+        <div id="talents-resources" style="display: flex; gap: 18px; justify-content: center; margin: 10px 0 16px; font-size: 14px; font-weight: bold; color: #ffeb3b;">
+          <span>🦴 Luut: <span id="talents-bones-count">0</span></span>
+          <span>💎 Jalokivet: <span id="talents-gems-count">0</span></span>
+        </div>
+        <div id="talents-branches-grid" class="talent-branches-grid"></div>
+        <button id="talents-close-btn">Sulje Koirakoulu</button>
+      </div>
+    </div>
+
+    <!-- Muinaiset Fossiilit Modal -->
+    <div id="fossils-overlay" class="hidden">
+      <div id="fossils-panel">
+        <h2>🦖 Muinaiset Fossiilit &amp; Vitriini</h2>
+        <p>Tutki maasta kaivamiasi esihistoriallisia fossiileja! Jokainen löydetty fossiili vahvistaa Huskyn <em>Muinaista Vaistoa</em> (+5% bonus luiden ja aarteiden arvoon).</p>
+        <div id="fossils-progress-header" style="display: flex; gap: 16px; justify-content: center; margin: 10px 0 16px; font-size: 14px; font-weight: bold; color: #ffd54f;">
+          <span>🏛️ Löydetyt fossiilit: <span id="fossils-found-count">0</span> / 5</span>
+          <span>✨ Muinainen Vaisto: +<span id="fossils-bonus-pct">0</span> %</span>
+        </div>
+        <div id="fossils-grid" class="fossils-grid"></div>
+        <button id="fossils-close-btn">Sulje Vitriini</button>
+      </div>
+    </div>
+
+
     <!-- Aloitus-/lopetusnäyttö -->
     <div id="overlay">
+      <!-- Aloitusnäkymä -->
       <div id="overlay-content">
         <h1>🐺 Husky Adventures</h1>
+        <canvas id="menu-husky-canvas" width="100" height="90" style="background: rgba(255, 255, 255, 0.05); border-radius: 50%; margin: 8px auto; display: block; border: 1.5px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px rgba(0,0,0,0.3);"></canvas>
         <p id="overlay-text">Pyydystä pieniä eläimiä ja väistä isompia!</p>
         <p class="hint">Tietokone: WASD/nuolet &nbsp;•&nbsp; ⚡ Vaihto = kirmaus &nbsp;•&nbsp; Välilyönti = ulvonta</p>
         <div id="highscores"></div>
-        <button id="start-btn">Aloita peli</button>
+        <div id="achievements-section">
+          <h3>🏆 Saavutukset &amp; Palkinnot</h3>
+          <div id="achievements-list"></div>
+        </div>
+        <div class="overlay-buttons" style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 4px;">
+            <button id="start-mainland-btn" style="background: linear-gradient(135deg, #1e7a30, #3ca854); border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; color: white; cursor: pointer; transition: transform 0.1s;">Maailmanmatka 🌍</button>
+            <button id="start-islands-btn" style="background: linear-gradient(135deg, #1e6fa8, #3c92d0); border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; color: white; cursor: pointer; transition: transform 0.1s;">Saariseikkailu ⛵</button>
+          </div>
+          <div style="display: flex; gap: 6px; justify-content: center; width: 100%; flex-wrap: wrap;">
+            <button id="shop-btn-open">Kauppa 💎</button>
+            <button id="luckyspin-btn-open">Onnenpyörä 🎡</button>
+            <button id="codex-btn-open">Bestiarium 📖</button>
+            <button id="passport-btn-open">Matkapassi 📕</button>
+            <button id="diary-btn-open">Ystäväkirja 📔</button>
+            <button id="quests-btn-open">Tehtävät 📜</button>
+            <button id="talents-btn-open">Koulutus 🎓</button>
+            <button id="fossils-btn-open">Fossiilit 🦖</button>
+          </div>
+        </div>
+      </div>
+      <!-- Karttanäkymä (vaihdetaan JS:llä) -->
+      <div id="map-panel" class="hidden">
+        <h2>🗺️ Seikkailukartta</h2>
+        <p>Valitse seuraava reittipisteesi:</p>
+        <div id="map-container-inner" style="position: relative; width: 100%; height: 380px; background: rgba(0,0,0,0.4); border-radius: 12px; overflow-y: auto; margin: 12px 0;">
+          <svg id="map-svg" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;"></svg>
+          <div id="map-nodes-container" style="position: absolute; inset: 0; width: 100%; height: 100%;"></div>
+        </div>
+        <div class="map-legend" style="display: flex; justify-content: space-around; font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.06); padding: 8px; border-radius: 8px; margin-bottom: 10px;">
+          <span>⚔️ Taistelu</span>
+          <span>🏛️ Luolasto</span>
+          <span>⛺ Lepo</span>
+          <span>👑 Pomo</span>
+          <span>❓ Mysteeri</span>
+          <span>🛒 Kauppias</span>
+          <span>💎 Jalokivi</span>
+        </div>
+        <div style="display: flex; gap: 8px; justify-content: center; width: 100%; margin-top: 8px;">
+          <button id="map-back-btn" style="background:#b71c1c; border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; color: white; cursor: pointer;">Lopeta seikkailu ❌</button>
+          <button id="victory-photo-btn" class="hidden" style="background: linear-gradient(135deg, #ff8f00, #ff6f00); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; color: white; cursor: pointer;">Ota voittokuva 📸</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bestiarium / Codex -näyttö -->
+    <div id="codex-overlay" class="hidden">
+      <div id="codex-panel">
+        <h2>📖 Luonnon Bestiarium</h2>
+        <div class="codex-tabs">
+          <button class="codex-tab active" data-tab="prey">Saaliseläimet 🐿️</button>
+          <button class="codex-tab" data-tab="predators">Pedot & Pomot 🐺</button>
+        </div>
+        <div id="codex-grid" class="codex-grid"></div>
+        <button id="codex-close-btn">Palaa alkuun</button>
+      </div>
+    </div>
+
+    <!-- Matkapassi / Passport-näyttö -->
+    <!-- Matkapassi / Passport-näyttö -->
+    <div id="passport-overlay" class="hidden">
+      <div id="passport-panel">
+        <div class="passport-tabs">
+          <button id="passport-tab-btn-book" class="passport-tab-btn active">📕 MATKAPASSI</button>
+          <button id="passport-tab-btn-postcards" class="passport-tab-btn">✉️ POSTIKORTIT</button>
+          <button id="passport-tab-btn-album" class="passport-tab-btn">📸 ALBUMI</button>
+          <button id="passport-tab-btn-memory" class="passport-tab-btn">🧠 MUISTIPELI</button>
+          <button id="passport-tab-btn-stats" class="passport-tab-btn">📊 TILASTOT</button>
+        </div>
+
+        <!-- TAB 1: KIRJA -->
+        <div id="passport-tab-content-book">
+          <div id="passport-book">
+            <!-- Tietosivu (Aukeaman vasen puoli) -->
+            <div class="passport-page page-left">
+              <div class="passport-photo-area">
+                <div class="passport-avatar">🐕</div>
+                <div class="passport-stamp-official">VIRALLINEN / OFFICIAL</div>
+              </div>
+              <div class="passport-info-details">
+                <p><strong>NIMI:</strong> Seikkailija Husky</p>
+                <p><strong>ROTU:</strong> Siperianhusky</p>
+                <p><strong>VIRKA:</strong> Pääsaalistaja</p>
+                <p><strong>LEIMAT:</strong> <span id="passport-stamps-count">0</span> / 16</p>
+              </div>
+              <div class="passport-decorative-line"></div>
+            </div>
+            <!-- Sisältösivu (Aukeaman oikea puoli) -->
+            <div class="passport-page page-right">
+              <h3 id="passport-page-title">Maa/Alue</h3>
+              <div class="passport-stamp-slot">
+                <!-- Leima piirtyy tähän dynaamisesti -->
+                <div id="passport-active-stamp" class="passport-stamp-graphic"></div>
+              </div>
+              <div class="passport-diary-notes">
+                <p id="passport-diary-text">Matkakertomukset ilmestyvät tähän kun taso on läpäisty.</p>
+              </div>
+              <div class="passport-collectible-display">
+                <span id="passport-collectible-emoji">❓</span>
+                <span id="passport-collectible-name">Ei löydettyjä esineitä</span>
+              </div>
+              <div class="passport-quest-status">
+                <div class="passport-quest-header">PAIKALLINEN HAASTE</div>
+                <div id="passport-quest-desc">Ladataan haasteen kuvausta...</div>
+                <div id="passport-quest-state">KESKEN ❌</div>
+              </div>
+            </div>
+            
+            <!-- Dynaamiset tarrat -->
+            <div id="passport-stickers-layer"></div>
+          </div>
+          <div class="passport-nav-controls">
+            <button id="passport-prev-btn">◄ Edellinen</button>
+            <span id="passport-page-number">Sivu 1 / 16</span>
+            <button id="passport-next-btn">Seuraava ►</button>
+          </div>
+          
+          <!-- Tarratyökalut -->
+          <div id="passport-sticker-tools">
+            <div class="sticker-tools-header">🏷️ Matkatarrat (Avaa leimoja saadaksesi tarroja)</div>
+            <div id="passport-sticker-drawer">
+              <!-- Dynaamiset tarrat -->
+            </div>
+            <div id="sticker-placement-hint" class="sticker-hint">✨ Valitse tarra ja klikkaa passia lisätäksesi sen! Poista tarra klikkaamalla sitä.</div>
+          </div>
+        </div>
+
+        <!-- TAB 2: POSTIKORTIT -->
+        <div id="passport-tab-content-postcards" class="hidden">
+          <h3 class="postcard-gallery-title">✉️ Companionin Postikortit</h3>
+          <p class="postcard-gallery-subtitle">Läpäise maita 3 tähden arvoisesti (haaste tehty & max 1 osuma) avataksesi postikortteja!</p>
+          <div id="postcard-grid">
+            <!-- Dynaamisesti luodut kortit -->
+          </div>
+        </div>
+
+        <!-- TAB 3: ALBUMI -->
+        <div id="passport-tab-content-album" class="hidden">
+          <h3 class="postcard-gallery-title">📸 Valokuva-albumi</h3>
+          <p class="postcard-gallery-subtitle">Ota voittokuvia seikkailujen päätteeksi täyttääksesi Huskyn ja Companionin albumia!</p>
+          <div id="album-grid">
+            <!-- Valokuvat piirtyvät tähän dynaamisesti -->
+          </div>
+        </div>
+
+        <!-- TAB 4: MUISTIPELI -->
+        <div id="passport-tab-content-memory" class="hidden">
+          <h3 class="postcard-gallery-title">🧠 Matkakuvien Muistipeli</h3>
+          <p class="postcard-gallery-subtitle">Etsi kohteiden lipuille ja nimille oikeat parit! Voitosta saat +5 💎!</p>
+          <div id="memory-stats" style="text-align: center; margin-bottom: 12px; font-weight: bold; font-size: 15px; color: #5d4037;">
+            Siirrot: <span id="memory-moves-val">0</span> | Löydetyt parit: <span id="memory-pairs-val">0</span> / 8
+          </div>
+          <div id="memory-grid">
+            <!-- Kortit generoituvat tähän dynaamisesti -->
+          </div>
+          <div style="display: flex; justify-content: center; margin-top: 14px;">
+            <button id="memory-reset-btn" style="background: linear-gradient(135deg, #795548, #5d4037); color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;">Uusi peli 🔄</button>
+          </div>
+        </div>
+
+        <!-- TAB 5: TILASTOT -->
+        <div id="passport-tab-content-stats" class="hidden">
+          <h3 class="postcard-gallery-title">📊 Matkakirjan Tilastot</h3>
+          <p class="postcard-gallery-subtitle">Tarkastele Huskyn ja kumppanin yhteistä matkataivalta!</p>
+          <div class="stats-notebook">
+            <div class="stats-grid">
+              <div class="stats-card">
+                <span class="stats-icon">🐾</span>
+                <div class="stats-info">
+                  <div class="stats-label">Kuljettu matka</div>
+                  <div class="stats-val" id="stats-dist-val">0 m</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">🐿️</span>
+                <div class="stats-info">
+                  <div class="stats-label">Saaliit pyydystetty</div>
+                  <div class="stats-val" id="stats-prey-val">0 kpl</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">🤕</span>
+                <div class="stats-info">
+                  <div class="stats-label">Otetut osumat</div>
+                  <div class="stats-val" id="stats-damage-val">0 osumaa</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">🏆</span>
+                <div class="stats-info">
+                  <div class="stats-label">Suoritetut haasteet</div>
+                  <div class="stats-val" id="stats-quests-val">0 / 10</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">✉️</span>
+                <div class="stats-info">
+                  <div class="stats-label">Kerätyt postikortit</div>
+                  <div class="stats-val" id="stats-postcards-val">0 / 16</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">📸</span>
+                <div class="stats-info">
+                  <div class="stats-label">Polaroid-valokuvat</div>
+                  <div class="stats-val" id="stats-photos-val">0 / 16</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">🧠</span>
+                <div class="stats-info">
+                  <div class="stats-label">Muistipelit voitettu</div>
+                  <div class="stats-val" id="stats-memory-val">0 peliä</div>
+                </div>
+              </div>
+              <div class="stats-card">
+                <span class="stats-icon">⏰</span>
+                <div class="stats-info">
+                  <div class="stats-label">Yhteinen peliaika</div>
+                  <div class="stats-val" id="stats-time-val">0 min 0 s</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="passport-close-btn">Sulje passi</button>
+      </div>
+    </div>
+
+    <!-- 3D Postikorttikatselin -->
+    <div id="postcard-viewer-modal" class="hidden">
+      <div class="postcard-viewer-content">
+        <div class="postcard-card-3d">
+          <div class="postcard-card-inner">
+            <!-- Etupuoli -->
+            <div class="postcard-card-front" id="postcard-view-front">
+              <div class="postcard-front-title" id="postcard-view-title">TERVEISET...</div>
+              <div class="postcard-front-flag" id="postcard-view-flag">🇫🇮</div>
+              <div class="postcard-front-artwork" id="postcard-view-artwork">🏔️</div>
+              <div class="postcard-front-unlocked-badge">3★ UNLOCKED</div>
+            </div>
+            <!-- Takapuoli -->
+            <div class="postcard-card-back">
+              <div class="postcard-back-left">
+                <p class="postcard-letter-text" id="postcard-view-letter">Kirje...</p>
+              </div>
+              <div class="postcard-back-right">
+                <div class="postcard-stamp-area">
+                  <div class="postcard-stamp-border">
+                    <span style="font-size: 16px;">🐾</span>
+                  </div>
+                </div>
+                <div class="postcard-address-lines">
+                  <div class="postcard-addr-line">Huskyn Perheelle</div>
+                  <div class="postcard-addr-line">Pohjoisen Kotikolo 1</div>
+                  <div class="postcard-addr-line" id="postcard-view-addr-country">FINLAND</div>
+                </div>
+              </div>
+              <div class="postcard-divider-line"></div>
+            </div>
+          </div>
+        </div>
+        <p class="postcard-viewer-hint">Käännä kortti klikkaamalla sitä!</p>
+        <button id="postcard-viewer-close-btn">Sulje kortti</button>
       </div>
     </div>
   </div>
 
-  <script src="js/audio.js"></script>
-  <script src="js/input.js"></script>
-  <script src="js/sprites.js"></script>
-  <script src="js/skills.js"></script>
-  <script src="js/entities.js"></script>
-  <script src="js/game.js"></script>
+  <!-- Kameran salamaefekti -->
+  <div id="polaroid-camera-overlay" class="hidden"></div>
+
+  <!-- Polaroid-kehitysnäkymä (Ota voittokuva painikkeen jälkeen) -->
+  <div id="polaroid-modal" class="hidden">
+    <div class="polaroid-modal-content">
+      <div class="polaroid-frame animating">
+        <canvas id="polaroid-canvas" width="320" height="260"></canvas>
+        <div class="polaroid-caption" id="polaroid-caption-text">Suomi 🇫🇮 - 11.7.2026</div>
+      </div>
+      <p class="polaroid-hint">Kuvasi kehittyy... 📸</p>
+      <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
+        <button id="polaroid-save-btn" style="background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: none;">Tallenna albumiin 💾</button>
+        <button id="polaroid-close-btn" style="background: #b71c1c; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: none;">Sulje ❌</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Albumikatselin (suurempi polaroid-katselu passista käsin) -->
+  <div id="album-viewer-modal" class="hidden">
+    <div class="album-viewer-content">
+      <div class="polaroid-frame large">
+        <canvas id="album-viewer-canvas" width="460" height="380"></canvas>
+        <div class="polaroid-caption large" id="album-viewer-caption-text" style="cursor: pointer;" title="Klikkaa muokataksesi kuvatekstiä ✍️">Matkamuisto</div>
+        <div id="album-viewer-caption-edit-container" class="hidden" style="margin-top: 14px; display: flex; gap: 8px; align-items: center; justify-content: center;">
+          <input type="text" id="album-viewer-caption-input" maxlength="40" placeholder="Kirjoita kuvateksti..." style="font-family: 'Caveat', 'Comic Sans MS', cursive; font-size: 20px; border: 1.5px dashed #795548; padding: 4px 8px; border-radius: 6px; color: #37474f; width: 280px; text-align: center; background: #fffde7; outline: none;"/>
+          <button id="album-viewer-caption-save-btn" style="background: #5d4037; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; font-family: sans-serif; transition: background 0.2s ease;">Tallenna ✍️</button>
+        </div>
+      </div>
+      <button id="album-viewer-close-btn">Sulje valokuva</button>
+    </div>
+  </div>
+
+  <script src="js/audio.js?v=13"></script>
+  <script src="js/input.js?v=13"></script>
+  <script src="js/sprites.js?v=13"></script>
+  <script src="js/skills.js?v=13"></script>
+  <script src="js/entities.js?v=13"></script>
+  <script src="js/game.js?v=13"></script>
 </body>
 </html>

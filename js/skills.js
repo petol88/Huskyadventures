@@ -47,6 +47,16 @@ const Skills = (() => {
       desc: 'Välilyönti / 🐺: pelästytä lähellä olevat pedot pakoon',
       apply: (p) => { p.hasHowl = true; p.howlPower += 1; },
     },
+    {
+      id: 'ironbite', name: 'Raudankova Purenta', emoji: '🦷', max: 1,
+      desc: 'Purentasi tekee pomoihin kaksinkertaista vahinkoa (2 HP)',
+      apply: (p) => { p.ironBite = true; },
+    },
+    {
+      id: 'smokebomb', name: 'Usvapommi', emoji: '💨', max: 1,
+      desc: 'Ulvonta luo suuren savupilven, joka sokeuttaa ja karkottaa viholliset laajemmalta säteeltä',
+      apply: (p) => { p.hasSmokeBomb = true; },
+    },
   ];
 
   function byId(id) { return ALL.find((s) => s.id === id); }
@@ -62,6 +72,9 @@ const Skills = (() => {
       bushSpeed: false,
       hasHowl: false,
       howlPower: 0,    // montako kertaa Ulvonta otettu (säde + jäähdytys)
+      hasShield: false, // Muinainen kilpi -artefakti
+      ironBite: false,
+      hasSmokeBomb: false,
       taken: {},       // id -> montako kertaa otettu
     };
   }
