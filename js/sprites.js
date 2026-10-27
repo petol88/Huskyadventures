@@ -1532,7 +1532,229 @@ const Sprites = (() => {
     ctx.restore();
   }
 
-  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo };
+  // --- Ylämaankarja / Pörrölehmä (Highland Cow) 🐂 ---
+  function highland_cow(ctx, r, swing, e) {
+    groundShadow(ctx, r * 1.3);
+
+    // 4 tukevaa sorkkajalkaa
+    leg(ctx, -r * 0.65, r * 0.32, r * 0.22, r * 0.55, '#7a3411', swing);
+    leg(ctx, -r * 0.25, r * 0.32, r * 0.22, r * 0.55, '#9e461a', -swing);
+    leg(ctx, r * 0.35, r * 0.32, r * 0.22, r * 0.55, '#7a3411', -swing);
+    leg(ctx, r * 0.72, r * 0.32, r * 0.22, r * 0.55, '#9e461a', swing);
+
+    // Häntä ja tupsu
+    ctx.strokeStyle = '#9e461a';
+    ctx.lineWidth = r * 0.12;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.85, -r * 0.1);
+    ctx.quadraticCurveTo(-r * 1.25, r * 0.2, -r * 1.15, r * 0.6);
+    ctx.stroke();
+    ellipse(ctx, -r * 1.15, r * 0.62, r * 0.16, r * 0.22, '#d97736');
+
+    // Muhkea, tuuhea oranssinruskea keho
+    shadedEllipse(ctx, 0, -r * 0.05, r * 1.05, r * 0.75, '#c3672b', '#7a3411');
+
+    // Pörröisiä karvatupsuja vartalon reunoilla
+    ctx.fillStyle = '#d97736';
+    for (let i = -3; i <= 3; i++) {
+      ctx.beginPath();
+      ctx.arc(i * r * 0.25, r * 0.42, r * 0.16, 0, Math.PI);
+      ctx.fill();
+    }
+
+    // Pää ja sarvet
+    const hx = r * 0.72, hy = -r * 0.32;
+    
+    // Mahtavat kaarevat sarvet taustalla
+    ctx.strokeStyle = '#f5eedc';
+    ctx.lineWidth = r * 0.16;
+    ctx.lineCap = 'round';
+    // Vasen sarvi
+    ctx.beginPath();
+    ctx.moveTo(hx - r * 0.1, hy - r * 0.15);
+    ctx.quadraticCurveTo(hx - r * 0.55, hy - r * 0.6, hx - r * 0.35, hy - r * 0.85);
+    ctx.stroke();
+    // Oikea sarvi
+    ctx.beginPath();
+    ctx.moveTo(hx + r * 0.15, hy - r * 0.15);
+    ctx.quadraticCurveTo(hx + r * 0.65, hy - r * 0.58, hx + r * 0.5, hy - r * 0.85);
+    ctx.stroke();
+    // Sarvien tummat kärjet
+    ctx.fillStyle = '#3a271d';
+    ellipse(ctx, hx - r * 0.35, hy - r * 0.85, r * 0.08, r * 0.1, '#3a271d');
+    ellipse(ctx, hx + r * 0.5, hy - r * 0.85, r * 0.08, r * 0.1, '#3a271d');
+
+    // Korvat sarvien alla
+    ear(ctx, hx - r * 0.35, hy, r * 0.22, r * 0.38, -0.65, '#a44d1e', '#e59866');
+    ear(ctx, hx + r * 0.35, hy, r * 0.22, r * 0.38, 0.65, '#a44d1e', '#e59866');
+
+    // Pää
+    shadedEllipse(ctx, hx, hy, r * 0.48, r * 0.44, '#b95c25', '#7a3411');
+
+    // Turpa & kirsu
+    ellipse(ctx, hx + r * 0.22, hy + r * 0.15, r * 0.28, r * 0.2, '#5d2c1d');
+    ellipse(ctx, hx + r * 0.16, hy + r * 0.16, r * 0.05, r * 0.06, '#1a0d07');
+    ellipse(ctx, hx + r * 0.28, hy + r * 0.16, r * 0.05, r * 0.06, '#1a0d07');
+
+    // Ylämaankarjan tunnusomainen runsas otsatukka silmien yli
+    ctx.fillStyle = '#e08244';
+    ctx.beginPath();
+    ctx.moveTo(hx - r * 0.35, hy - r * 0.3);
+    ctx.quadraticCurveTo(hx, hy + r * 0.1, hx + r * 0.35, hy - r * 0.3);
+    ctx.lineTo(hx + r * 0.3, hy + r * 0.05);
+    ctx.quadraticCurveTo(hx, hy + r * 0.25, hx - r * 0.3, hy + r * 0.05);
+    ctx.closePath();
+    ctx.fill();
+
+    // Silmät pilkistävät tuuhean tukan lomasta
+    eye(ctx, hx - r * 0.08, hy - r * 0.04, r * 0.08, '#1a0d07');
+    eye(ctx, hx + r * 0.14, hy - r * 0.04, r * 0.08, '#1a0d07');
+    ellipse(ctx, hx - r * 0.06, hy - r * 0.06, r * 0.03, r * 0.03, '#ffffff');
+    ellipse(ctx, hx + r * 0.16, hy - r * 0.06, r * 0.03, r * 0.03, '#ffffff');
+  }
+
+  // --- Loch Nessin Hirviö (Nessie) 🦕 ---
+  function nessie(ctx, r, swing, e) {
+    // Veden väreilyt ja aallot
+    ctx.save();
+    ctx.strokeStyle = 'rgba(77, 208, 225, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.5, r * 1.3, r * 0.35, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Kaksi vartalokumpua vedestä
+    shadedEllipse(ctx, -r * 0.65, r * 0.25, r * 0.45, r * 0.35, '#2ec4b6', '#146356');
+    shadedEllipse(ctx, -r * 0.15, r * 0.2, r * 0.55, r * 0.4, '#2ec4b6', '#146356');
+
+    // Pyrstö vedestä
+    ctx.strokeStyle = '#2ec4b6';
+    ctx.lineWidth = r * 0.22;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.95, r * 0.2);
+    ctx.quadraticCurveTo(-r * 1.3, r * 0.0, -r * 1.25, -r * 0.2);
+    ctx.stroke();
+
+    // Pitkä joutsenmainen kaula kohoaa vedestä
+    const neckPhase = (e && e.moving) ? Math.sin(e.animPhase * 2) * 0.1 : 0;
+    ctx.beginPath();
+    ctx.moveTo(r * 0.3, r * 0.25);
+    ctx.quadraticCurveTo(r * 0.65 + neckPhase * r, -r * 0.3, r * 0.55, -r * 0.95);
+    ctx.lineWidth = r * 0.32;
+    ctx.strokeStyle = '#2ec4b6';
+    ctx.stroke();
+
+    // Vaalea vatsaraita kaulassa
+    ctx.lineWidth = r * 0.12;
+    ctx.strokeStyle = '#b2ebf2';
+    ctx.beginPath();
+    ctx.moveTo(r * 0.42, r * 0.22);
+    ctx.quadraticCurveTo(r * 0.72 + neckPhase * r, -r * 0.3, r * 0.62, -r * 0.92);
+    ctx.stroke();
+
+    // Pää ja suloinen dinonokkakuono
+    const hx = r * 0.58, hy = -r * 0.98;
+    shadedEllipse(ctx, hx, hy, r * 0.4, r * 0.3, '#38ef7d', '#146356');
+    ellipse(ctx, hx + r * 0.25, hy + r * 0.05, r * 0.22, r * 0.16, '#2ec4b6');
+
+    // Pikkuharja pään takana
+    ctx.fillStyle = '#ffeb3b';
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(hx - r * 0.22 - i * r * 0.1, hy - r * 0.15 + i * r * 0.15, r * 0.07, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Suuri ystävällinen silmä
+    eye(ctx, hx + r * 0.08, hy - r * 0.06, r * 0.1, '#004d40');
+    ellipse(ctx, hx + r * 0.11, hy - r * 0.09, r * 0.04, r * 0.04, '#ffffff');
+
+    // Vesipisarat
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.beginPath();
+    ctx.arc(r * 0.7, r * 0.45 + Math.sin(Date.now() * 0.01) * 3, 2, 0, Math.PI * 2);
+    ctx.arc(-r * 0.8, r * 0.48 + Math.cos(Date.now() * 0.01) * 3, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // --- Koiranpentu (Puppy) 🐶🍼 ---
+  function puppy(ctx, r, swing, e) {
+    groundShadow(ctx, r * 1.0);
+    const pType = (e && e.puppyType) ? e.puppyType : 'lumi';
+    
+    // Väriteemat pennuille
+    const colors = {
+      lumi:   { body: '#f0f4f8', mark: '#d9e2ec', ear: '#bcccdc', innerEar: '#fbb6ce', eye: '#1976d2' },
+      kipina: { body: '#ff8a65', mark: '#e64a19', ear: '#bf360c', innerEar: '#ffccbc', eye: '#3e2723' },
+      hilla:  { body: '#ffd54f', mark: '#ffb300', ear: '#f57f17', innerEar: '#ffe082', eye: '#4e342e' },
+      salama: { body: '#37474f', mark: '#eceff1', ear: '#263238', innerEar: '#ff80ab', eye: '#00e5ff' },
+      toivo:  { body: '#a5d6a7', mark: '#e8f5e9', ear: '#43a047', innerEar: '#c8e6c9', eye: '#1b5e20' }
+    }[pType] || { body: '#d9e2ec', mark: '#bcccdc', ear: '#829ab1', innerEar: '#fbb6ce', eye: '#243b53' };
+
+    // Pieni vipattava häntä takana
+    const tailWag = Math.sin((e && e.animPhase ? e.animPhase : Date.now() * 0.015) * 16) * 0.6;
+    ctx.save();
+    ctx.translate(-r * 0.55, -r * 0.1);
+    ctx.rotate(tailWag);
+    ctx.strokeStyle = colors.body;
+    ctx.lineWidth = r * 0.22;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(-r * 0.4, -r * 0.35, -r * 0.3, -r * 0.65);
+    ctx.stroke();
+    // Valkea hännänpää
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = r * 0.18;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.2, -r * 0.45);
+    ctx.lineTo(-r * 0.3, -r * 0.65);
+    ctx.stroke();
+    ctx.restore();
+
+    // 4 lyhyttä suloista tassua
+    leg(ctx, -r * 0.35, r * 0.35, r * 0.2, r * 0.45, colors.ear, swing);
+    leg(ctx, -r * 0.1,  r * 0.35, r * 0.2, r * 0.45, colors.body, -swing);
+    leg(ctx,  r * 0.25, r * 0.35, r * 0.2, r * 0.45, colors.ear, -swing);
+    leg(ctx,  r * 0.5,  r * 0.35, r * 0.2, r * 0.45, colors.body, swing);
+
+    // Pyöreä pehmoinen vatsa & vartalo
+    shadedEllipse(ctx, 0, 0, r * 0.72, r * 0.6, colors.body, colors.mark);
+    ellipse(ctx, r * 0.1, r * 0.1, r * 0.45, r * 0.4, '#ffffff');
+
+    // Suhteellisen suuri, hellyttävä pentupää
+    const hx = r * 0.45, hy = -r * 0.45;
+    shadedEllipse(ctx, hx, hy, r * 0.58, r * 0.52, colors.body, colors.mark);
+
+    // Korvat (hieman lerpattavat hellyttävät pentukorvat)
+    ear(ctx, hx - r * 0.28, hy - r * 0.38, r * 0.22, r * 0.42, -0.3, colors.ear, colors.innerEar);
+    ear(ctx, hx + r * 0.15, hy - r * 0.42, r * 0.22, r * 0.42, 0.25, colors.ear, colors.innerEar);
+
+    // Naaman valkeat merkit
+    ellipse(ctx, hx + r * 0.2, hy + r * 0.12, r * 0.3, r * 0.22, '#ffffff');
+
+    // Pieni musta kirsu
+    ellipse(ctx, hx + r * 0.35, hy + r * 0.08, r * 0.09, r * 0.07, '#1a1a24');
+
+    // Suuret sädehtivät pennunsilmät
+    eye(ctx, hx + r * 0.02, hy - r * 0.08, r * 0.13, colors.eye);
+    eye(ctx, hx + r * 0.24, hy - r * 0.08, r * 0.13, colors.eye);
+    ellipse(ctx, hx + r * 0.05, hy - r * 0.12, r * 0.05, r * 0.05, '#ffffff'); // iso kiilto
+    ellipse(ctx, hx + r * 0.27, hy - r * 0.12, r * 0.05, r * 0.05, '#ffffff');
+    ellipse(ctx, hx - r * 0.01, hy - r * 0.05, r * 0.025, r * 0.025, '#ffffff'); // pikkukiilto
+
+    // Pieni iloinen kieli ulkona
+    ctx.fillStyle = '#ff80ab';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.28, hy + r * 0.22, r * 0.07, 0, Math.PI);
+    ctx.fill();
+  }
+
+  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy };
 
 
   function drawHat(ctx, r, hatId) {

@@ -375,7 +375,7 @@ class Prey {
   constructor(x, y, kind = 'rabbit') {
     this.x = x;
     this.y = y;
-    this.radius = (kind === 'deer' || kind === 'mountain_goat' || kind === 'kangaroo') ? 17 : (kind === 'monkey' ? 14 : (kind === 'coconut_crab' ? 16 : (kind === 'weasel' ? 10 : 13)));
+    this.radius = (kind === 'highland_cow') ? 20 : ((kind === 'nessie') ? 22 : ((kind === 'deer' || kind === 'mountain_goat' || kind === 'kangaroo') ? 17 : (kind === 'monkey' ? 14 : (kind === 'coconut_crab' ? 16 : (kind === 'weasel' ? 10 : 13)))));
     this.kind = kind;
     // Lajikohtaiset ominaisuudet tuovat vaihtelua
     const stats = {
@@ -394,6 +394,8 @@ class Prey {
       seagull:         { speed: 195, fleeDist: 175 },
       weasel:          { speed: 215, fleeDist: 185 },
       kangaroo:        { speed: 198, fleeDist: 190 },
+      highland_cow:    { speed: 130, fleeDist: 140 },
+      nessie:          { speed: 165, fleeDist: 170 },
     };
     const s = stats[kind] || stats.rabbit;
     this.speed = s.speed;

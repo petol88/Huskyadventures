@@ -124,6 +124,13 @@
   const fossilsFoundCount = document.getElementById('fossils-found-count');
   const fossilsBonusPct = document.getElementById('fossils-bonus-pct');
 
+  const puppiesOverlay = document.getElementById('puppies-overlay');
+  const puppiesBtnOpen = document.getElementById('puppies-btn-open');
+  const puppiesCloseBtn = document.getElementById('puppies-close-btn');
+  const puppiesGrid = document.getElementById('puppies-grid');
+  const puppiesFoundCount = document.getElementById('puppies-found-count');
+  const puppiesActiveName = document.getElementById('puppies-active-name');
+
 
   if (muteBtn) {
     muteBtn.addEventListener('click', () => {
@@ -188,7 +195,10 @@
       prey: ['rabbit', 'mouse', 'bird', 'weasel', 'deer'] },
     { id: 'outback', name: 'Outback', emoji: '🦘', ground: '#7a2b16', grid: 'rgba(255, 170, 80, 0.07)',
       rockFill: '#8c3d23', rockStroke: '#d96b43', bushFill: '#4a6b32', bushEmoji: '🌿',
-      prey: ['rabbit', 'mouse', 'bird', 'kangaroo'] }
+      prey: ['rabbit', 'mouse', 'bird', 'kangaroo'] },
+    { id: 'highlands', name: 'Ylämaat', emoji: '🏰', ground: '#2e4726', grid: 'rgba(180, 130, 220, 0.08)',
+      rockFill: '#4e535c', rockStroke: '#7a828e', bushFill: '#7d3c98', bushEmoji: '🪻',
+      prey: ['rabbit', 'mouse', 'bird', 'weasel', 'highland_cow', 'nessie'] }
   ];
   const WORLD_TOUR_DESTINATIONS = [
     { country: 'Suomi 🇫🇮', region: 'Lapin metsät', biomeId: 'forest' },
@@ -201,7 +211,8 @@
     { country: 'Kiina 🇨🇳', region: 'Himalajan sumuvuoret', biomeId: 'foggy_peaks' },
     { country: 'USA 🇺🇸', region: 'Uuden-Englannin ruskarunsaat', biomeId: 'autumn_woods' },
     { country: 'Japani 🇯🇵', region: 'Kioton kristalliluolat', biomeId: 'crystals' },
-    { country: 'Norja 🇳🇴', region: 'Tromssan revontulilaakso', biomeId: 'aurora' }
+    { country: 'Norja 🇳🇴', region: 'Tromssan revontulilaakso', biomeId: 'aurora' },
+    { country: 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', region: 'Ylämaat & Loch Ness', biomeId: 'highlands' }
   ];
 
   const ISLAND_TOUR_DESTINATIONS = [
@@ -335,6 +346,12 @@
       notes: 'Ison Valliriutan turkoosien korallivesien ja punaisen Outbackin erämaassa aurinko paistoi kirkkaasti. Juoksin kilpaa loikkivien kengurujen kanssa punaisella hiekalla. Paikalliset luonnonsuojelijat lahjoittivat minulle aidon kultaisen bumerangin.',
       collectible: 'Kultainen bumerangi 🪃',
       stampStyle: 'passport-stamp-design orange'
+    },
+    'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': {
+      title: 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+      notes: 'Ylämaiden sumuisten kukkuloiden, ikivanhojen linnojen ja syvien järvien maassa kanervat tuoksuivat huumaavasti. Pörröinen ylämaankarja katseli meitä lempeästi otsatukkansa alta, ja syvän Loch Nessin aalloissa näimme suuren salaperäisen hahmon! Linnan herra lahjoitti meille kultaisen säkkipillin.',
+      collectible: 'Kultainen säkkipilli 🎶',
+      stampStyle: 'passport-stamp-design blue'
     }
   };
 
@@ -342,7 +359,7 @@
   const passportList = [
     'Suomi 🇫🇮', 'Sveitsi 🇨🇭', 'Egypti 🇪🇬', 'Brasilia 🇧🇷', 'Islanti 🇮🇸',
     'Louisiana 🇺🇸', 'Kanada 🇨🇦', 'Kiina 🇨🇳', 'USA 🇺🇸', 'Japani 🇯🇵', 'Norja 🇳🇴',
-    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺'
+    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿'
   ];
 
   function openPassport() {
@@ -511,6 +528,13 @@
       artwork: '🪃🦘',
       background: 'linear-gradient(135deg, #bf360c, #00838f)',
       letter: 'G\'day ystävät!\n\nAustralian punainen Outback oli täynnä vauhtia! Kilpailimme loikkivien kengurujen kanssa punaisella hiekalla ja uimme Suuren Valliriutan kirkkaissa vesissä. Löysimme aidon kultaisen bumerangin!\n\nTerveisin,\nCompanion & Husky 🪃'
+    },
+    'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': {
+      title: 'LOCH NESS & LINNAT',
+      flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+      artwork: '🏰🦕',
+      background: 'linear-gradient(135deg, #1b5e20, #004d40)',
+      letter: 'Terveisiä sumuisilta Ylämailta!\n\nSkotlanti on satumainen! Juoksimme nummilla pörröisten lehmäkavereiden kanssa ja vierailimme vanhoissa linnanraunioissa. Loch Nessillä näimme Nessien iloiset aallot ja saimme kultaisen säkkipillin!\n\nTerveisin,\nCompanion & Husky 🦕'
     }
   };
 
@@ -1343,6 +1367,8 @@
   let nearTelescope = false;
   let nearAgility = false;
   let nearWishingWell = false;
+  let nearPuppyNursery = false;
+  let activePuppyFollower = null;
   let nearFriend = null;
   let activeFriendSpeech = null;
   let backyardCampfireState = {
@@ -1583,7 +1609,22 @@
       mammoth: false,
       plesiosaur: false,
       t_rex_tooth: false
-    }
+    },
+    puppies: {
+      lumi: false,
+      kipina: false,
+      hilla: false,
+      salama: false,
+      toivo: false
+    },
+    puppyHappiness: {
+      lumi: 100,
+      kipina: 100,
+      hilla: 100,
+      salama: 100,
+      toivo: 100
+    },
+    activePuppy: null
   };
 
   function loadShopData() {
@@ -1742,6 +1783,26 @@
           ['trilobite', 'amber', 'mammoth', 'plesiosaur', 't_rex_tooth'].forEach(k => {
             if (typeof shopData.fossils[k] !== 'boolean') shopData.fossils[k] = false;
           });
+        }
+
+        if (!shopData.puppies || typeof shopData.puppies !== 'object') {
+          shopData.puppies = { lumi: false, kipina: false, hilla: false, salama: false, toivo: false };
+        } else {
+          ['lumi', 'kipina', 'hilla', 'salama', 'toivo'].forEach(k => {
+            if (typeof shopData.puppies[k] !== 'boolean') shopData.puppies[k] = false;
+          });
+        }
+
+        if (!shopData.puppyHappiness || typeof shopData.puppyHappiness !== 'object') {
+          shopData.puppyHappiness = { lumi: 100, kipina: 100, hilla: 100, salama: 100, toivo: 100 };
+        } else {
+          ['lumi', 'kipina', 'hilla', 'salama', 'toivo'].forEach(k => {
+            if (typeof shopData.puppyHappiness[k] !== 'number') shopData.puppyHappiness[k] = 100;
+          });
+        }
+
+        if (typeof shopData.activePuppy !== 'string' && shopData.activePuppy !== null) {
+          shopData.activePuppy = null;
         }
       }
     } catch (e) {
@@ -2406,9 +2467,12 @@
       while (Math.hypot(pPos.x - center.x, pPos.y - center.y) < 250) {
         pPos = randomPos(140);
       }
+      const missingPup = typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA.find(p => !shopData.puppies || !shopData.puppies[p.id]) : null;
+      const pupType = missingPup ? missingPup.id : (typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA[Math.floor(Math.random() * PUPPIES_DATA.length)].id : 'lumi');
       lostPuppy = {
         x: pPos.x, y: pPos.y, radius: 10,
-        following: false, animPhase: 0, flip: 1
+        following: false, animPhase: 0, flip: 1,
+        kind: 'puppy', puppyType: pupType
       };
     }
 
@@ -2460,9 +2524,12 @@
       while (Math.hypot(pPos.x - center.x, pPos.y - center.y) < 250) {
         pPos = randomPos(140);
       }
+      const missingPup = typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA.find(p => !shopData.puppies || !shopData.puppies[p.id]) : null;
+      const pupType = missingPup ? missingPup.id : (typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA[Math.floor(Math.random() * PUPPIES_DATA.length)].id : 'lumi');
       lostPuppy = {
         x: pPos.x, y: pPos.y, radius: 10,
-        following: false, animPhase: 0, flip: 1
+        following: false, animPhase: 0, flip: 1,
+        kind: 'puppy', puppyType: pupType
       };
     }
     currentSeason = getSeasonForLevel(level);
@@ -3577,13 +3644,13 @@
   // --- Apufunktiot bestiarialle ---
   function preyEmoji(kind) {
     return {
-      kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
+      highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
       bear:'🐻', wolf:'🐺', fox:'🦊', lynx:'🐱', eagle:'🦅', owl:'🦉', yeti:'❄️', scorpion:'🦂', crocodile:'🐊', panther:'🐆', shark:'🦈'
     }[kind] || '🐾';
   }
   function preyFinnish(kind) {
     return {
-      kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
+      highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
       bear:'Karhu', wolf:'Susi', fox:'Kettu', lynx:'Ilves', eagle:'Jättikotka', owl:'Pöllö', yeti:'Jeti', scorpion:'Skorpioni', crocodile:'Krokotiili', panther:'Pantteri', shark:'Hai'
     }[kind] || kind;
   }
@@ -3793,6 +3860,9 @@
       }
       if (shopData.unlockedStamps && shopData.unlockedStamps['Australia 🇦🇺']) {
         collectionBonus += 14; // Bumerangin heijastama noutosäde
+      }
+      if (shopData.activePuppy === 'lumi') {
+        collectionBonus += 16; // Lumin tarkka vainu laajentaa keräyssädettä
       }
       if (shopData.talents && shopData.talents.magnet) {
         collectionBonus += shopData.talents.magnet * 22; // Luumagneetti talent
@@ -4083,6 +4153,34 @@
     
     if (companion) {
       companion.update(dt, husky, [], interior.world, interior.walls);
+
+    // Päivitä aktiivinen pentukaveri sisätiloissa / takapihalla
+    if (shopData.activePuppy && shopData.puppies && shopData.puppies[shopData.activePuppy]) {
+      if (!activePuppyFollower) {
+        activePuppyFollower = {
+          x: husky.x - 24, y: husky.y - 24, radius: 10,
+          kind: 'puppy', puppyType: shopData.activePuppy,
+          animPhase: 0, flip: 1, moving: false
+        };
+      }
+      activePuppyFollower.puppyType = shopData.activePuppy;
+      const targetX = husky.x - Math.cos(husky.rotation || 0) * 30;
+      const targetY = husky.y - Math.sin(husky.rotation || 0) * 30;
+      const dist = Math.hypot(targetX - activePuppyFollower.x, targetY - activePuppyFollower.y);
+      if (dist > 18) {
+        const angle = Math.atan2(targetY - activePuppyFollower.y, targetX - activePuppyFollower.x);
+        const pupSpeed = (dist > 75) ? 250 : 175;
+        activePuppyFollower.x += Math.cos(angle) * pupSpeed * dt;
+        activePuppyFollower.y += Math.sin(angle) * pupSpeed * dt;
+        activePuppyFollower.flip = Math.cos(angle) < 0 ? -1 : 1;
+        activePuppyFollower.animPhase += dt * 14;
+        activePuppyFollower.moving = true;
+      } else {
+        activePuppyFollower.moving = false;
+      }
+    } else {
+      activePuppyFollower = null;
+    }
     }
     Input.consumeHowl(); // kuluta painallus ettei laukea heti ulkona
     updateEffects(dt);
@@ -4124,6 +4222,7 @@
     nearTelescope = (interior.kind === 'backyard' && Math.hypot(husky.x - 580, husky.y - 180) < 55);
     nearAgility = (interior.kind === 'backyard' && Math.hypot(husky.x - 180, husky.y - 370) < 55);
     nearWishingWell = (interior.kind === 'backyard' && Math.hypot(husky.x - 580, husky.y - 370) < 55);
+    nearPuppyNursery = (interior.kind === 'backyard' && Math.hypot(husky.x - 380, husky.y - 110) < 65);
 
     nearFriend = null;
     if (interior.kind === 'backyard' && interior.friends) {
@@ -4173,6 +4272,8 @@
         startAgilityCourse();
       } else if (nearWishingWell) {
         openWishingWellModal();
+      } else if (nearPuppyNursery) {
+        openPuppiesModal();
       } else if (nearFriend) {
         interactWithFriend(nearFriend);
       }
@@ -4403,6 +4504,9 @@
     if (shopData.talents && shopData.talents.speed) {
       origSpeedMul *= (1 + shopData.talents.speed * 0.08);
     }
+    if (shopData.activePuppy === 'kipina') {
+      origSpeedMul *= 1.06; // Kipinän vauhtitassu antaa +6% perusnopeutta
+    }
     if (speedBoostTimer > 0) {
       perks.speedMul = origSpeedMul * 1.25;
     } else {
@@ -4462,6 +4566,34 @@
         }
       } else {
         companion.update(dt, husky, prey, world, obstacles, collectibles);
+
+    // Päivitä aktiivinen pentukaveri seikkailukentällä
+    if (shopData.activePuppy && shopData.puppies && shopData.puppies[shopData.activePuppy]) {
+      if (!activePuppyFollower) {
+        activePuppyFollower = {
+          x: husky.x - 24, y: husky.y - 24, radius: 10,
+          kind: 'puppy', puppyType: shopData.activePuppy,
+          animPhase: 0, flip: 1, moving: false
+        };
+      }
+      activePuppyFollower.puppyType = shopData.activePuppy;
+      const targetX = husky.x - Math.cos(husky.rotation || 0) * 30;
+      const targetY = husky.y - Math.sin(husky.rotation || 0) * 30;
+      const dist = Math.hypot(targetX - activePuppyFollower.x, targetY - activePuppyFollower.y);
+      if (dist > 18) {
+        const angle = Math.atan2(targetY - activePuppyFollower.y, targetX - activePuppyFollower.x);
+        const pupSpeed = (dist > 75) ? 250 : 175;
+        activePuppyFollower.x += Math.cos(angle) * pupSpeed * dt;
+        activePuppyFollower.y += Math.sin(angle) * pupSpeed * dt;
+        activePuppyFollower.flip = Math.cos(angle) < 0 ? -1 : 1;
+        activePuppyFollower.animPhase += dt * 14;
+        activePuppyFollower.moving = true;
+      } else {
+        activePuppyFollower.moving = false;
+      }
+    } else {
+      activePuppyFollower = null;
+    }
       }
       for (const p of prey) {
         if (!p.alive) continue;
@@ -4546,12 +4678,36 @@
 
         for (const s of structures) {
           if (Math.hypot(lostPuppy.x - s.x, lostPuppy.y - s.y) < s.radius + lostPuppy.radius + 12) {
-            spawnBurst(s.x, s.y, ['#ffb3d9', '#ffd700', '#ffffff'], 32);
+            spawnBurst(s.x, s.y, ['#ffb3d9', '#ffd700', '#ffffff', '#ff80ab'], 36);
             Audio.play('legendary');
             shopData.achievements.rescuedCount = (shopData.achievements.rescuedCount || 0) + 1;
-            shopData.totalGems += 8;
-            saveShopData();
-            showBanner('👑 Pelastit pennun! +8 💎');
+
+            if (!shopData.puppies) {
+              shopData.puppies = { lumi: false, kipina: false, hilla: false, salama: false, toivo: false };
+            }
+            if (!shopData.puppyHappiness) {
+              shopData.puppyHappiness = { lumi: 100, kipina: 100, hilla: 100, salama: 100, toivo: 100 };
+            }
+
+            const targetPupId = (lostPuppy && lostPuppy.puppyType && !shopData.puppies[lostPuppy.puppyType]) 
+              ? lostPuppy.puppyType 
+              : ((typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA.find(p => !shopData.puppies[p.id])?.id : null));
+
+            if (targetPupId) {
+              shopData.puppies[targetPupId] = true;
+              shopData.puppyHappiness[targetPupId] = 100;
+              if (!shopData.activePuppy) shopData.activePuppy = targetPupId;
+              shopData.totalGems += 12;
+              saveShopData();
+              const pInfo = typeof PUPPIES_DATA !== 'undefined' ? PUPPIES_DATA.find(p => p.id === targetPupId) : null;
+              const pName = pInfo ? `${pInfo.name} ${pInfo.emoji}` : 'Huskypentu';
+              showBanner(`🐾 PELASTIT PENNUN: ${pName}! Pentu muutti mökin pentutarhaan! +12 💎`);
+            } else {
+              shopData.totalGems += 10;
+              saveShopData();
+              showBanner('🐾 Pelastit pienen huskypennun! Kaikki 5 pentua ovat jo turvassa pentutarhassa! +10 💎');
+            }
+
             checkAchievements();
             lostPuppy = null;
             break;
@@ -4589,6 +4745,10 @@
       }
       if (shopData.unlockedStamps && shopData.unlockedStamps['Kiina 🇨🇳']) {
         duration += 1.0;
+      }
+      if (shopData.unlockedStamps && shopData.unlockedStamps['Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿']) {
+        radius += 25; // Kultaisen säkkipillin huumaava sävel!
+        duration += 0.5;
       }
       husky.howlMax = Math.max(2.5, 6 - perks.howlPower * 1.0);
       let reduction = 1.0;
@@ -4882,7 +5042,7 @@
             showBanner('🐒 Sait apinan kiinni ja sait aarteesi takaisin!');
           }
 
-          let pts = (p.kind === 'kangaroo' ? 4 : p.kind === 'deer' ? 3 : p.kind === 'beaver' ? 2 : 1) * comboMul + monkeyBonus;
+          let pts = (p.kind === 'nessie' ? 6 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))) * comboMul + monkeyBonus;
           if (p.kind === 'weasel') pts *= 2;
           if (p.elite) pts *= 3;
 
@@ -5900,6 +6060,7 @@
     }
 
     if (companion) companion.draw(ctx);
+    if (activePuppyFollower) Sprites.draw(ctx, activePuppyFollower);
     drawHusky();
 
     if (isFishingActive) {
@@ -6706,6 +6867,88 @@
       ctx.fillText('Teltta ⛺', 180, 130);
       ctx.restore();
 
+      // 6. Pentutarha & Leikkipuisto (Puppy Sanctuary) x: 380, y: 110
+      ctx.save();
+      // Pehmeä leikkialue / aitaus
+      ctx.fillStyle = '#2b521e';
+      roundRect(ctx, 290, 50, 180, 110, 14);
+      ctx.fill();
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.lineWidth = 2.5;
+      roundRect(ctx, 290, 50, 180, 110, 14);
+      ctx.stroke();
+
+      // Pieni söpö pentukoppi
+      ctx.fillStyle = '#b71c1c';
+      ctx.fillRect(305, 68, 36, 28);
+      ctx.beginPath();
+      ctx.moveTo(300, 68);
+      ctx.lineTo(323, 52);
+      ctx.lineTo(346, 68);
+      ctx.closePath();
+      ctx.fillStyle = '#d32f2f';
+      ctx.fill();
+      ctx.fillStyle = '#212121';
+      ctx.fillRect(317, 80, 12, 16);
+
+      // Vesikuppi & herkkukuppi
+      ctx.fillStyle = '#0288d1';
+      ctx.beginPath();
+      ctx.arc(445, 78, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffb300';
+      ctx.beginPath();
+      ctx.arc(458, 78, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Kyltti
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#ff80ab';
+      ctx.textAlign = 'center';
+      ctx.fillText('🐶 Pentutarha 🍼', 380, 44);
+
+      // Piirretään pelastetut pennut leikkimässä aitauksessa
+      if (shopData.puppies && typeof PUPPIES_DATA !== 'undefined') {
+        const rescuedList = PUPPIES_DATA.filter(p => shopData.puppies[p.id]);
+        if (rescuedList.length === 0) {
+          ctx.font = 'italic 10px sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+          ctx.fillText('Pelasta pentuja seikkailuista!', 380, 115);
+        } else {
+          rescuedList.forEach((pup, idx) => {
+            const baseAngle = (idx / rescuedList.length) * Math.PI * 2;
+            const px = 380 + Math.cos(baseAngle + gameTime * 0.4) * 45;
+            const py = 115 + Math.sin(baseAngle + gameTime * 0.4) * 22;
+            const bounce = Math.abs(Math.sin(gameTime * 4 + idx * 1.5)) * 4;
+            Sprites.draw(ctx, {
+              x: px,
+              y: py - bounce,
+              radius: 9,
+              kind: 'puppy',
+              puppyType: pup.id,
+              moving: true,
+              animPhase: gameTime * 8 + idx
+            });
+          });
+        }
+      }
+      ctx.restore();
+
+      if (nearPuppyNursery) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.fillRect(380 - 110, 166, 220, 24);
+        ctx.strokeStyle = '#ff80ab';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(380 - 110, 166, 220, 24);
+        ctx.fillStyle = '#ffb2dd';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Paina E tai klikkaa: Pentutarha 🐶', 380, 178);
+        ctx.restore();
+      }
+
       // 4. Kaukoputki (telescope) x: 580, y: 180
       ctx.save();
       ctx.strokeStyle = '#37474f';
@@ -6960,6 +7203,7 @@
     ctx.fillText(interior.kind === 'backyard' ? '⬇ Mökkiin' : '⬇ Ulos', ex.x, ex.y - 18);
     
     if (companion) companion.draw(ctx);
+    if (activePuppyFollower) Sprites.draw(ctx, activePuppyFollower);
     drawHusky();
 
     // Pimeys luolassa (Radial Gradient -maski Huskyn ympärillä)
@@ -7490,7 +7734,7 @@
     function generateWorldMapDeco(mode) {
       worldMapDeco = [];
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 6 : 10;
+      const ROWS = isIsland ? 7 : 12;
       const PANEL_H = ROWS * 100;
       const PANEL_W = 480;
 
@@ -7574,7 +7818,7 @@
 
     function generateWorldMap(mode) {
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 6 : 10;
+      const ROWS = isIsland ? 7 : 12;
       const COLS = 3;
       const PANEL_W = 480;
       const PANEL_H = ROWS * 100;
@@ -8812,7 +9056,8 @@
       'Madagaskar 🇲🇬': { emoji: '🥭', name: 'Baobab-hedelmä', desc: 'Kerää jättimäinen baobab-puun hedelmä sademetsästä' },
       'Pääsiäissaari 🗿': { emoji: '🎭', name: 'Heimomaski', desc: 'Etsi patsaiden juurelta kadonnut heimomaski' },
       'Havaiji 🌋': { emoji: '📿', name: 'Laavakivi-amuletti', desc: 'Nouda pyhä tulivuoren laavakivi-amuletti' },
-      'Australia 🇦🇺': { emoji: '🪃', name: 'Kultainen Bumerangi', desc: 'Löydä punaiselle hiekalle kätketty muinainen bumerangi' }
+      'Australia 🇦🇺': { emoji: '🪃', name: 'Kultainen Bumerangi', desc: 'Löydä punaiselle hiekalle kätketty muinainen bumerangi' },
+      'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': { emoji: '🎶', name: 'Kultainen Säkkipilli', desc: 'Löydä vanhojen linnanraunioiden kätköistä kultainen säkkipilli' }
     };
     
     const q = questDb[dest.country];
@@ -9624,6 +9869,8 @@
     { id: 'seagull', name: 'Lokki', emoji: '🐦', desc: 'Merisaaristot nopeasti kaartaen. Erittäin vikkelä ja lentotaitoinen lintu.' },
     { id: 'weasel', name: 'Kärppä', emoji: '🐹', desc: 'Ruskametsän vikkelä asukas. Erittäin ketterä ja antaa tupla XP:t!' },
     { id: 'kangaroo', name: 'Kenguru', emoji: '🦘', desc: 'Australian punaisen Outbackin loikkija. Erittäin nopea ja jousimainen, antaa runsaasti pisteitä ja XP:tä!' },
+    { id: 'highland_cow', name: 'Ylämaankarja', emoji: '🐂', desc: 'Skotlannin Ylämaiden lempeä ja tuuheatukkainen pörrölehmä. Erittäin arvokas saalis, antaa pehmeää villaa ja maitoa!' },
+    { id: 'nessie', name: 'Loch Nessin Hirviö', emoji: '🦕', desc: 'Muinaisten vesien salaperäinen ja ystävällinen asukki. Vilahtaa vain nummijokien ja sumuisten järvien aalloissa!' },
   ];
 
   const CODEX_PREDATORS = [
@@ -10038,7 +10285,9 @@
     { id: 'auroraFriend', name: 'Revontulien Ystävä', desc: 'Vieraile Norjan revontulilaaksossa', target: 1, reward: 20, icon: '🌌' },
     { id: 'talentMaster5', name: 'Mestarikoira', desc: 'Avaa 5 lahjakkuustasoa Koirakoulussa', target: 5, reward: 25, icon: '🎓' },
     { id: 'outbackExplorer', name: 'Outbackin Kiertäjä', desc: 'Vieraile Australian punaisessa Outbackissa', target: 1, reward: 20, icon: '🦘' },
-    { id: 'paleontologist', name: 'Paleontologikoira', desc: 'Löydä kaikki 5 muinaista fossiilia maasta kaivamalla', target: 5, reward: 30, icon: '🦖' }
+    { id: 'paleontologist', name: 'Paleontologikoira', desc: 'Löydä kaikki 5 muinaista fossiilia maasta kaivamalla', target: 5, reward: 30, icon: '🦖' },
+    { id: 'highlandExplorer', name: 'Ylämaan Vaeltaja', desc: 'Vieraile Skotlannin nummilla ja Loch Nessillä', target: 1, reward: 20, icon: '🏰' },
+    { id: 'puppyFamily', name: 'Koiraperhe', desc: 'Pelasta kaikki 5 huskypentua mökin pentutarhaan', target: 5, reward: 30, icon: '🐶' }
   ];
 
   function getAchievementProgress(achId) {
@@ -10085,6 +10334,13 @@
     if (achId === 'paleontologist') {
       if (!shopData.fossils) return 0;
       return Object.values(shopData.fossils).filter(Boolean).length;
+    }
+    if (achId === 'highlandExplorer') {
+      return (shopData.unlockedStamps && shopData.unlockedStamps['Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿']) ? 1 : 0;
+    }
+    if (achId === 'puppyFamily') {
+      if (!shopData.puppies) return 0;
+      return Object.values(shopData.puppies).filter(Boolean).length;
     }
     return 0;
   }
@@ -11740,6 +11996,7 @@
     if (countryName === 'Havaiji 🌋') return 'iceland';
     if (countryName === 'Norja 🇳🇴') return 'iceland';
     if (countryName === 'Australia 🇦🇺') return 'brazil';
+    if (countryName === 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿') return 'finland';
     return 'default';
   }
 
@@ -12322,6 +12579,180 @@
   window.openFossilsModal = openFossilsModal;
   window.closeFossilsModal = closeFossilsModal;
 
+  // --- Koiranpennut & Mökin Pentutarha (Puppy Sanctuary System) ---
+  const PUPPIES_DATA = [
+    {
+      id: 'lumi',
+      name: 'Lumi',
+      emoji: '❄️',
+      trait: 'Tarkkakorva',
+      desc: 'Lempeä valkoinen napahuskyn pentu. Tarkat korvat ja vainu aistivat kätketyt aarteet kaukaa.',
+      perk: '+16 px Magneettisäde luihin & aarteisiin'
+    },
+    {
+      id: 'kipina',
+      name: 'Kipinä',
+      emoji: '🔥',
+      trait: 'Vauhtitassu',
+      desc: 'Tulikettumainen, leikkisä ja rohkea pentu. Juoksee aina innokkaasti seikkailun kärjessä.',
+      perk: '+6 % Liikkumisnopeus seikkailussa'
+    },
+    {
+      id: 'hilla',
+      name: 'Hilla',
+      emoji: '🫐',
+      trait: 'Herkkusuu',
+      desc: 'Lapin kultainen marjapentu. Rakastaa metsän antimia ja osaa löytää kaikkein mehevimmät herkut.',
+      perk: 'Antaa lisä-XP:tä marjoista & sienistä'
+    },
+    {
+      id: 'salama',
+      name: 'Salama',
+      emoji: '⚡',
+      trait: 'Akrobaatti',
+      desc: 'Mustavalkoinen pikakiitäjä, joka loikkii ketterästi kivien ja esteiden yli.',
+      perk: '-20 % Syöksyn (Dash) latausaika'
+    },
+    {
+      id: 'toivo',
+      name: 'Toivo',
+      emoji: '🍀',
+      trait: 'Onnentuoja',
+      desc: 'Suloinen onnenpentu, joka kantaa mukanaan hyvää onnea kaikkialle minne menee.',
+      perk: '+20 % Mahdollisuus tuplaluluihin seikkailussa'
+    }
+  ];
+
+  function openPuppiesModal() {
+    renderPuppiesUI();
+    if (puppiesOverlay) {
+      puppiesOverlay.classList.remove('hidden');
+    }
+    Audio.play('skill');
+  }
+
+  function closePuppiesModal() {
+    if (puppiesOverlay) {
+      puppiesOverlay.classList.add('hidden');
+    }
+    Audio.play('tick');
+  }
+
+  function setActivePuppy(puppyId) {
+    if (!shopData.puppies) shopData.puppies = {};
+    if (!shopData.puppies[puppyId]) return;
+
+    if (shopData.activePuppy === puppyId) {
+      shopData.activePuppy = null;
+      showBanner('🐾 Pentukaveri jäi lepäämään pentutarhaan.');
+    } else {
+      shopData.activePuppy = puppyId;
+      const pup = PUPPIES_DATA.find(p => p.id === puppyId);
+      const pupName = pup ? `${pup.name} ${pup.emoji}` : 'Pentu';
+      showBanner(`✨ ${pupName} lähti mukaan seikkailuusi!`);
+      Audio.play('legendary');
+    }
+    saveShopData();
+    renderPuppiesUI();
+  }
+
+  function petPuppy(puppyId) {
+    if (!shopData.puppies || !shopData.puppies[puppyId]) return;
+    if (!shopData.puppyHappiness) shopData.puppyHappiness = {};
+    shopData.puppyHappiness[puppyId] = Math.min(100, (shopData.puppyHappiness[puppyId] || 80) + 20);
+    saveShopData();
+    Audio.play('artifact');
+    const pup = PUPPIES_DATA.find(p => p.id === puppyId);
+    showBanner(`❤️ Silitit pentua ${pup ? pup.name : ''}! Pentu heiluttaa häntää ja antaa pusuja!`);
+    renderPuppiesUI();
+  }
+
+  function feedPuppy(puppyId) {
+    if (!shopData.puppies || !shopData.puppies[puppyId]) return;
+    if (shopData.totalBones < 5) {
+      showBanner('Tarvitset 5 luuta 🦴 ostaaksesi herkkukeksin!');
+      Audio.play('hurt');
+      return;
+    }
+    shopData.totalBones -= 5;
+    if (!shopData.puppyHappiness) shopData.puppyHappiness = {};
+    shopData.puppyHappiness[puppyId] = 100;
+    gainXp(15);
+    saveShopData();
+    updateHud();
+    Audio.play('levelup');
+    const pup = PUPPIES_DATA.find(p => p.id === puppyId);
+    showBanner(`🍪 Annoit herkkukeksin pennulle ${pup ? pup.name : ''}! Pentu on onnellinen (+15 XP)!`);
+    renderPuppiesUI();
+  }
+
+  function renderPuppiesUI() {
+    if (!puppiesGrid) return;
+    if (!shopData.puppies) {
+      shopData.puppies = { lumi: false, kipina: false, hilla: false, salama: false, toivo: false };
+    }
+    if (!shopData.puppyHappiness) {
+      shopData.puppyHappiness = { lumi: 100, kipina: 100, hilla: 100, salama: 100, toivo: 100 };
+    }
+
+    const rescuedCount = PUPPIES_DATA.filter(p => shopData.puppies[p.id]).length;
+    const activePup = PUPPIES_DATA.find(p => p.id === shopData.activePuppy && shopData.puppies[p.id]);
+
+    if (puppiesFoundCount) puppiesFoundCount.textContent = rescuedCount;
+    if (puppiesActiveName) {
+      puppiesActiveName.textContent = activePup ? `${activePup.name} ${activePup.emoji}` : 'Ei valittu';
+      puppiesActiveName.style.color = activePup ? '#ffd54f' : '#b0bec5';
+    }
+
+    puppiesGrid.innerHTML = PUPPIES_DATA.map(p => {
+      const isRescued = !!shopData.puppies[p.id];
+      const isActive = isRescued && (shopData.activePuppy === p.id);
+      const happiness = Math.max(20, Math.min(100, shopData.puppyHappiness[p.id] || 100));
+
+      return `
+        <div class="puppy-card ${isRescued ? 'rescued' : 'unrescued'} ${isActive ? 'active-companion' : ''}">
+          <div class="puppy-avatar">${isRescued ? p.emoji : '🔒'}</div>
+          <div class="puppy-name">${isRescued ? p.name : 'Eksynyt Pentu'}</div>
+          <div class="puppy-trait">${isRescued ? p.trait : 'Pelastettavissa'}</div>
+          <div class="puppy-desc">${isRescued ? p.desc : 'Etsi ja pelasta tämä pentu seikkailuista kotiin pentutarhaan!'}</div>
+          <div class="puppy-perk-badge">${p.perk}</div>
+          
+          ${isRescued ? `
+            <div class="puppy-happiness-wrap">
+              <div class="puppy-happiness-label">
+                <span>Onnellisuus</span>
+                <span>${happiness}% ❤️</span>
+              </div>
+              <div class="puppy-happiness-bar">
+                <div class="puppy-happiness-fill" style="width: ${happiness}%;"></div>
+              </div>
+            </div>
+
+            <div class="puppy-buttons-row">
+              <button class="puppy-btn puppy-btn-select ${isActive ? 'active' : ''}" onclick="setActivePuppy('${p.id}')">
+                ${isActive ? 'Valittuna ✨' : 'Mukaan 🐾'}
+              </button>
+              <button class="puppy-btn puppy-btn-pet" onclick="petPuppy('${p.id}')">
+                Silitä ❤️
+              </button>
+              <button class="puppy-btn puppy-btn-feed" onclick="feedPuppy('${p.id}')">
+                Keksi 🍪 (5 🦴)
+              </button>
+            </div>
+          ` : `
+            <div class="puppy-unrescued-badge">Pelasta tasolta 🐾</div>
+          `}
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.openPuppiesModal = openPuppiesModal;
+  window.closePuppiesModal = closePuppiesModal;
+  window.setActivePuppy = setActivePuppy;
+  window.petPuppy = petPuppy;
+  window.feedPuppy = feedPuppy;
+
   // --- Koiran Agility-Esterata (Minipeli) ---
   function startAgilityCourse() {
     scene = 'agility';
@@ -12831,6 +13262,14 @@
 
       // Takapiha klikkaukset
       if (interior.kind === 'backyard') {
+        // Pentutarha (380, 110)
+        if (clickX >= 280 && clickX <= 480 && clickY >= 40 && clickY <= 170) {
+          if (Math.hypot(husky.x - 380, husky.y - 110) < 115) {
+            openPuppiesModal();
+          } else {
+            showBanner('Mene lähemmäs pentutarhaa! 🚶');
+          }
+        }
         // Nuotio (380, 240)
         if (Math.hypot(clickX - 380, clickY - 240) < 50) {
           if (Math.hypot(husky.x - 380, husky.y - 240) < 95) {
@@ -13002,6 +13441,19 @@
   if (fossilsOverlay) {
     fossilsOverlay.addEventListener('click', (e) => {
       if (e.target === fossilsOverlay) closeFossilsModal();
+    });
+  }
+
+  // Pentutarha-kuuntelijat
+  if (puppiesBtnOpen) {
+    puppiesBtnOpen.addEventListener('click', openPuppiesModal);
+  }
+  if (puppiesCloseBtn) {
+    puppiesCloseBtn.addEventListener('click', closePuppiesModal);
+  }
+  if (puppiesOverlay) {
+    puppiesOverlay.addEventListener('click', (e) => {
+      if (e.target === puppiesOverlay) closePuppiesModal();
     });
   }
 
