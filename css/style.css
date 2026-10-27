@@ -3776,3 +3776,161 @@ body.touch #touch-controls {
 }
 
 
+
+/* --- Pihasauna Modal --- */
+#sauna-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+#sauna-panel {
+  background: linear-gradient(135deg, rgba(38, 24, 16, 0.96), rgba(62, 39, 25, 0.98));
+  border: 2px solid #8d6e63;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(230, 81, 0, 0.25);
+  border-radius: 18px;
+  width: 90%;
+  max-width: 580px;
+  padding: 24px 28px;
+  text-align: center;
+  color: #fff;
+  font-family: inherit;
+  box-sizing: border-box;
+  animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#sauna-panel h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  color: #ffb74d;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.sauna-subtitle {
+  color: #d7ccc8;
+  font-size: 13px;
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+
+.sauna-stats-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.sauna-stat-box {
+  flex: 1;
+  background: rgba(46, 28, 20, 0.85);
+  border: 1px solid #6d4c41;
+  border-radius: 12px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.sauna-stat-icon {
+  font-size: 20px;
+}
+
+.sauna-stat-label {
+  font-size: 11px;
+  color: #bcaaa4;
+}
+
+.sauna-stat-value {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffe0b2;
+}
+
+.sauna-actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.sauna-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+.sauna-action-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.sauna-action-btn:active {
+  transform: translateY(0);
+}
+
+.sauna-action-btn.loyly-btn {
+  background: linear-gradient(135deg, #e65100, #ff8f00);
+  color: #fff;
+  border: 1px solid #ffb74d;
+  box-shadow: 0 4px 12px rgba(230, 81, 0, 0.35);
+}
+
+.sauna-action-btn.vihta-btn {
+  background: linear-gradient(135deg, #1b5e20, #388e3c);
+  color: #fff;
+  border: 1px solid #81c784;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+}
+
+.sauna-action-btn.plunge-btn {
+  background: linear-gradient(135deg, #01579b, #0288d1);
+  color: #fff;
+  border: 1px solid #4fc3f7;
+  box-shadow: 0 4px 12px rgba(2, 136, 209, 0.35);
+}
+
+.sauna-action-btn .btn-emoji {
+  font-size: 28px;
+}
+
+.sauna-action-btn .btn-title {
+  display: block;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.sauna-action-btn .btn-desc {
+  display: block;
+  font-size: 11px;
+  opacity: 0.92;
+}
+
+#sauna-close-btn {
+  background: #5d4037;
+  color: #fff;
+  border: 1px solid #8d6e63;
+  padding: 10px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+#sauna-close-btn:hover {
+  background: #6d4c41;
+  transform: translateY(-1px);
+}

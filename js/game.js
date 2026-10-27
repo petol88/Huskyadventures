@@ -131,6 +131,16 @@
   const puppiesFoundCount = document.getElementById('puppies-found-count');
   const puppiesActiveName = document.getElementById('puppies-active-name');
 
+  const saunaOverlay = document.getElementById('sauna-overlay');
+  const saunaBtnOpen = document.getElementById('sauna-btn-open');
+  const saunaCloseBtn = document.getElementById('sauna-close-btn');
+  const saunaThrowBtn = document.getElementById('sauna-throw-btn');
+  const saunaVihtaBtn = document.getElementById('sauna-vihta-btn');
+  const saunaPlungeBtn = document.getElementById('sauna-plunge-btn');
+  const saunaTempDisplay = document.getElementById('sauna-temp-display');
+  const saunaLoylyCount = document.getElementById('sauna-loyly-count');
+  const saunaBuffStatus = document.getElementById('sauna-buff-status');
+
 
   if (muteBtn) {
     muteBtn.addEventListener('click', () => {
@@ -198,7 +208,10 @@
       prey: ['rabbit', 'mouse', 'bird', 'kangaroo'] },
     { id: 'highlands', name: 'Ylämaat', emoji: '🏰', ground: '#2e4726', grid: 'rgba(180, 130, 220, 0.08)',
       rockFill: '#4e535c', rockStroke: '#7a828e', bushFill: '#7d3c98', bushEmoji: '🪻',
-      prey: ['rabbit', 'mouse', 'bird', 'weasel', 'highland_cow', 'nessie'] }
+      prey: ['rabbit', 'mouse', 'bird', 'weasel', 'highland_cow', 'nessie'] },
+    { id: 'galapagos', name: 'Galápagossaaret', emoji: '🐢', ground: '#232120', grid: 'rgba(21, 122, 127, 0.08)',
+      rockFill: '#3a3335', rockStroke: '#157a7f', bushFill: '#2d6a4f', bushEmoji: '🌵',
+      prey: ['rabbit', 'bird', 'giant_tortoise', 'marine_iguana'] }
   ];
   const WORLD_TOUR_DESTINATIONS = [
     { country: 'Suomi 🇫🇮', region: 'Lapin metsät', biomeId: 'forest' },
@@ -222,7 +235,8 @@
     { country: 'Madagaskar 🇲🇬', region: 'Apinasaaret', biomeId: 'swamp' },
     { country: 'Pääsiäissaari 🗿', region: 'Rapa Nui', biomeId: 'foggy_peaks' },
     { country: 'Havaiji 🌋', region: 'Honolulun tulivuoret', biomeId: 'volcano' },
-    { country: 'Australia 🇦🇺', region: 'Outback & Valliriutta', biomeId: 'outback' }
+    { country: 'Australia 🇦🇺', region: 'Outback & Valliriutta', biomeId: 'outback' },
+    { country: 'Galápagos 🇪🇨', region: 'Tulivuorisaaristo & Kilpikonnat', biomeId: 'galapagos' }
   ];
 
   function getDestinationForLevel(lv) {
@@ -352,6 +366,12 @@
       notes: 'Ylämaiden sumuisten kukkuloiden, ikivanhojen linnojen ja syvien järvien maassa kanervat tuoksuivat huumaavasti. Pörröinen ylämaankarja katseli meitä lempeästi otsatukkansa alta, ja syvän Loch Nessin aalloissa näimme suuren salaperäisen hahmon! Linnan herra lahjoitti meille kultaisen säkkipillin.',
       collectible: 'Kultainen säkkipilli 🎶',
       stampStyle: 'passport-stamp-design blue'
+    },
+    'Galápagos 🇪🇨': {
+      title: 'Galápagos 🇪🇨',
+      notes: 'Mustaa laavahiekkaa ja kristallinkirkasta turkoosia merta! Ikivanhat jättiläiskilpikonnat vaeltelivat kaktuspensaiden lomassa ja merileguaanit ottivat aurinkoa tummilla kallioilla puhallellen suolaa sieraimistaan. Löysimme rannalta muinaisen kilpikonnan suojakilven!',
+      collectible: 'Muinainen Kilpikonnan Kilpi 🛡️',
+      stampStyle: 'passport-stamp-design teal'
     }
   };
 
@@ -359,7 +379,7 @@
   const passportList = [
     'Suomi 🇫🇮', 'Sveitsi 🇨🇭', 'Egypti 🇪🇬', 'Brasilia 🇧🇷', 'Islanti 🇮🇸',
     'Louisiana 🇺🇸', 'Kanada 🇨🇦', 'Kiina 🇨🇳', 'USA 🇺🇸', 'Japani 🇯🇵', 'Norja 🇳🇴',
-    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿'
+    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Galápagos 🇪🇨'
   ];
 
   function openPassport() {
@@ -535,6 +555,13 @@
       artwork: '🏰🦕',
       background: 'linear-gradient(135deg, #1b5e20, #004d40)',
       letter: 'Terveisiä sumuisilta Ylämailta!\n\nSkotlanti on satumainen! Juoksimme nummilla pörröisten lehmäkavereiden kanssa ja vierailimme vanhoissa linnanraunioissa. Loch Nessillä näimme Nessien iloiset aallot ja saimme kultaisen säkkipillin!\n\nTerveisin,\nCompanion & Husky 🦕'
+    },
+    'Galápagos 🇪🇨': {
+      title: 'GALÁPAGOSIN SAARISTO',
+      flag: '🇪🇨',
+      artwork: '🐢🌋',
+      background: 'linear-gradient(135deg, #1f2937, #064e3b)',
+      letter: 'Terveisiä Charles Darwinin jalanjäljiltä Galápagoksilta!\n\nTämä tulivuorisaaristo on täynnä ihmeellistä luontoa! Jättiläiskilpikonnat ovat uskomattoman suuria ja ystävällisiä, ja merileguaanit sukeltavat aalloissa! Saimme matkamuistoksi muinaisen kilpikonnan maagisen suojakilven.\n\nTerveisin,\nCompanion & Husky 🐢'
     }
   };
 
@@ -1368,6 +1395,9 @@
   let nearAgility = false;
   let nearWishingWell = false;
   let nearPuppyNursery = false;
+  let nearSauna = false;
+  let galapagosShieldUsed = false;
+  let saunaTemperature = 85;
   let activePuppyFollower = null;
   let nearFriend = null;
   let activeFriendSpeech = null;
@@ -1804,6 +1834,8 @@
         if (typeof shopData.activePuppy !== 'string' && shopData.activePuppy !== null) {
           shopData.activePuppy = null;
         }
+        if (typeof shopData.saunaLöylyCount !== 'number') shopData.saunaLöylyCount = 0;
+        if (typeof shopData.saunaBuffTimer !== 'number') shopData.saunaBuffTimer = 0;
       }
     } catch (e) {
       console.error("Error loading shop data, resetting:", e);
@@ -2195,6 +2227,7 @@
       new Obstacle(580, 180, 28, 'rock'),
       new Obstacle(180, 370, 30, 'rock'),
       new Obstacle(580, 370, 30, 'rock'),
+      new Obstacle(660, 260, 38, 'rock'),
     ];
     const exit = { x: 380, y: w.height - 36, r: 32 };
     
@@ -2461,6 +2494,7 @@
       companion = null;
     }
 
+    galapagosShieldUsed = false;
     lostPuppy = null;
     if (Math.random() < 0.35) {
       let pPos = randomPos(140);
@@ -3267,6 +3301,16 @@
       }
     }
     
+    if (shopData.unlockedStamps && shopData.unlockedStamps['Galápagos 🇪🇨'] && !galapagosShieldUsed) {
+      galapagosShieldUsed = true;
+      invulnTimer = 2.0;
+      spawnTextParticle(husky.x, husky.y - 24, "KILPI TORJUI! 🛡️🐢", "#4caf50", "bold 15px sans-serif");
+      spawnBurst(husky.x, husky.y, ['#81c784', '#aed581', '#ffffff', '#4caf50'], 24);
+      Audio.play('goldbone');
+      showBanner('🛡️ Muinainen Kilpikonnan Kilpi torjui iskun!');
+      return false;
+    }
+
     lives--;
     tookDamageThisLevel = true;
     shopData.stats.damageTaken = (shopData.stats.damageTaken || 0) + 1;
@@ -3644,13 +3688,13 @@
   // --- Apufunktiot bestiarialle ---
   function preyEmoji(kind) {
     return {
-      highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
+      giant_tortoise:'🐢', marine_iguana:'🦎', highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
       bear:'🐻', wolf:'🐺', fox:'🦊', lynx:'🐱', eagle:'🦅', owl:'🦉', yeti:'❄️', scorpion:'🦂', crocodile:'🐊', panther:'🐆', shark:'🦈'
     }[kind] || '🐾';
   }
   function preyFinnish(kind) {
     return {
-      highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
+      giant_tortoise:'Jättiläiskilpikonna', marine_iguana:'Merileguaani', highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
       bear:'Karhu', wolf:'Susi', fox:'Kettu', lynx:'Ilves', eagle:'Jättikotka', owl:'Pöllö', yeti:'Jeti', scorpion:'Skorpioni', crocodile:'Krokotiili', panther:'Pantteri', shark:'Hai'
     }[kind] || kind;
   }
@@ -3863,6 +3907,9 @@
       }
       if (shopData.activePuppy === 'lumi') {
         collectionBonus += 16; // Lumin tarkka vainu laajentaa keräyssädettä
+      }
+      if (shopData.saunaBuffTimer > 0) {
+        collectionBonus += 15; // Saunan raikkaus ja vireys laajentaa noutosädettä
       }
       if (shopData.talents && shopData.talents.magnet) {
         collectionBonus += shopData.talents.magnet * 22; // Luumagneetti talent
@@ -4184,6 +4231,12 @@
     }
     Input.consumeHowl(); // kuluta painallus ettei laukea heti ulkona
     updateEffects(dt);
+    if (shopData.saunaBuffTimer > 0) {
+      shopData.saunaBuffTimer -= dt;
+      if (Math.random() < 0.2) {
+        spawnBurst(husky.x, husky.y, ['#ffcc80', '#ffffff', '#e0f7fa'], 2);
+      }
+    }
     collectBones(dt);
     Audio.setTension(0);
     if (invulnTimer > 0) invulnTimer -= dt;
@@ -4223,6 +4276,7 @@
     nearAgility = (interior.kind === 'backyard' && Math.hypot(husky.x - 180, husky.y - 370) < 55);
     nearWishingWell = (interior.kind === 'backyard' && Math.hypot(husky.x - 580, husky.y - 370) < 55);
     nearPuppyNursery = (interior.kind === 'backyard' && Math.hypot(husky.x - 380, husky.y - 110) < 65);
+    nearSauna = (interior.kind === 'backyard' && Math.hypot(husky.x - 660, husky.y - 260) < 65);
 
     nearFriend = null;
     if (interior.kind === 'backyard' && interior.friends) {
@@ -4274,6 +4328,8 @@
         openWishingWellModal();
       } else if (nearPuppyNursery) {
         openPuppiesModal();
+      } else if (nearSauna) {
+        openSaunaModal();
       } else if (nearFriend) {
         interactWithFriend(nearFriend);
       }
@@ -4506,6 +4562,9 @@
     }
     if (shopData.activePuppy === 'kipina') {
       origSpeedMul *= 1.06; // Kipinän vauhtitassu antaa +6% perusnopeutta
+    }
+    if (shopData.saunaBuffTimer > 0) {
+      origSpeedMul *= 1.12; // Saunan hehku antaa +12% nopeutta!
     }
     if (speedBoostTimer > 0) {
       perks.speedMul = origSpeedMul * 1.25;
@@ -5042,7 +5101,7 @@
             showBanner('🐒 Sait apinan kiinni ja sait aarteesi takaisin!');
           }
 
-          let pts = (p.kind === 'nessie' ? 6 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))) * comboMul + monkeyBonus;
+          let pts = (p.kind === 'nessie' ? 6 : (p.kind === 'giant_tortoise' ? 5 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'marine_iguana' ? 4 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))))) * comboMul + monkeyBonus;
           if (p.kind === 'weasel') pts *= 2;
           if (p.elite) pts *= 3;
 
@@ -6995,6 +7054,95 @@
       }
       ctx.restore();
 
+      // Pihasauna x: 660, y: 260
+      ctx.save();
+      // Hirsiseinät
+      ctx.fillStyle = '#4e342e';
+      ctx.fillRect(615, 215, 90, 85);
+      ctx.strokeStyle = '#271c19';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(615, 215, 90, 85);
+      // Hirren vaakaraidat
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.lineWidth = 1.5;
+      for (let y = 227; y < 300; y += 12) {
+        ctx.beginPath(); ctx.moveTo(615, y); ctx.lineTo(705, y); ctx.stroke();
+      }
+      // Saunan tumma harjakatto
+      ctx.fillStyle = '#263238';
+      ctx.beginPath();
+      ctx.moveTo(605, 218);
+      ctx.lineTo(660, 185);
+      ctx.lineTo(715, 218);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#1e272c';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Piippu ja nouseva sauna-savuke/höyry
+      ctx.fillStyle = '#37474f';
+      ctx.fillRect(682, 172, 12, 22);
+      for (let i = 0; i < 3; i++) {
+        const steamPhase = (gameTime * 2 + i * 1.2) % 3.0;
+        const sAlpha = Math.max(0, 1.0 - steamPhase / 3.0) * 0.45;
+        const sy = 168 - steamPhase * 16;
+        const sx = 688 + Math.sin(gameTime * 3 + i) * 6;
+        ctx.fillStyle = `rgba(255, 255, 255, ${sAlpha})`;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 4 + steamPhase * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Lämmin hehkuva saunan ikkuna
+      const kiuasFlicker = 0.85 + 0.15 * Math.sin(gameTime * 8);
+      ctx.fillStyle = `rgba(255, 167, 38, ${kiuasFlicker})`;
+      ctx.fillRect(630, 235, 22, 22);
+      ctx.strokeStyle = '#271c19';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(630, 235, 22, 22);
+      ctx.beginPath();
+      ctx.moveTo(641, 235); ctx.lineTo(641, 257);
+      ctx.moveTo(630, 246); ctx.lineTo(652, 246);
+      ctx.stroke();
+
+      // Ovi
+      ctx.fillStyle = '#3e2723';
+      ctx.fillRect(664, 245, 28, 55);
+      ctx.strokeStyle = '#1b0000';
+      ctx.strokeRect(664, 245, 28, 55);
+      ctx.fillStyle = '#ffd54f';
+      ctx.beginPath();
+      ctx.arc(669, 274, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Pieni terassi ja saunakiulu + koivuvihta
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🪵🌿', 650, 310);
+
+      // Otsikko
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#ffb74d';
+      ctx.textAlign = 'center';
+      ctx.fillText('Pihasauna 🧖‍♂️🔥', 660, 178);
+      ctx.restore();
+
+      if (nearSauna) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.fillRect(660 - 110, 320, 220, 24);
+        ctx.strokeStyle = '#ffb74d';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(660 - 110, 320, 220, 24);
+        ctx.fillStyle = '#ffe0b2';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Paina E tai klikkaa: Pihasauna 🧖‍♂️🔥', 660, 332);
+        ctx.restore();
+      }
+
       // 6. Revontulien Toivomuskaivo x: 580, y: 370
       ctx.save();
       ctx.fillStyle = '#546e7a';
@@ -7734,7 +7882,7 @@
     function generateWorldMapDeco(mode) {
       worldMapDeco = [];
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 7 : 12;
+      const ROWS = isIsland ? 8 : 12;
       const PANEL_H = ROWS * 100;
       const PANEL_W = 480;
 
@@ -7818,7 +7966,7 @@
 
     function generateWorldMap(mode) {
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 7 : 12;
+      const ROWS = isIsland ? 8 : 12;
       const COLS = 3;
       const PANEL_W = 480;
       const PANEL_H = ROWS * 100;
@@ -9057,7 +9205,8 @@
       'Pääsiäissaari 🗿': { emoji: '🎭', name: 'Heimomaski', desc: 'Etsi patsaiden juurelta kadonnut heimomaski' },
       'Havaiji 🌋': { emoji: '📿', name: 'Laavakivi-amuletti', desc: 'Nouda pyhä tulivuoren laavakivi-amuletti' },
       'Australia 🇦🇺': { emoji: '🪃', name: 'Kultainen Bumerangi', desc: 'Löydä punaiselle hiekalle kätketty muinainen bumerangi' },
-      'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': { emoji: '🎶', name: 'Kultainen Säkkipilli', desc: 'Löydä vanhojen linnanraunioiden kätköistä kultainen säkkipilli' }
+      'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': { emoji: '🎶', name: 'Kultainen Säkkipilli', desc: 'Löydä vanhojen linnanraunioiden kätköistä kultainen säkkipilli' },
+      'Galápagos 🇪🇨': { emoji: '🛡️', name: 'Muinainen Kilvenkappale', desc: 'Löydä laavasaaren rannalta muinainen jättiläiskilpikonnan suojakilpi' }
     };
     
     const q = questDb[dest.country];
@@ -9871,6 +10020,8 @@
     { id: 'kangaroo', name: 'Kenguru', emoji: '🦘', desc: 'Australian punaisen Outbackin loikkija. Erittäin nopea ja jousimainen, antaa runsaasti pisteitä ja XP:tä!' },
     { id: 'highland_cow', name: 'Ylämaankarja', emoji: '🐂', desc: 'Skotlannin Ylämaiden lempeä ja tuuheatukkainen pörrölehmä. Erittäin arvokas saalis, antaa pehmeää villaa ja maitoa!' },
     { id: 'nessie', name: 'Loch Nessin Hirviö', emoji: '🦕', desc: 'Muinaisten vesien salaperäinen ja ystävällinen asukki. Vilahtaa vain nummijokien ja sumuisten järvien aalloissa!' },
+    { id: 'giant_tortoise', name: 'Jättiläiskilpikonna', emoji: '🐢', desc: 'Galápagossaarten ikivanha ja rauhallinen suuri matelija. Vetää päänsä ja jalkansa suojaan kun sitä lähestytään nopeasti.' },
+    { id: 'marine_iguana', name: 'Merileguaani', emoji: '🦎', desc: 'Meren aalloissa uiva ja mustilla laavakallioilla lekotteleva leguaani, joka puhaltaa suolasuihkuja.' },
   ];
 
   const CODEX_PREDATORS = [
@@ -10287,7 +10438,9 @@
     { id: 'outbackExplorer', name: 'Outbackin Kiertäjä', desc: 'Vieraile Australian punaisessa Outbackissa', target: 1, reward: 20, icon: '🦘' },
     { id: 'paleontologist', name: 'Paleontologikoira', desc: 'Löydä kaikki 5 muinaista fossiilia maasta kaivamalla', target: 5, reward: 30, icon: '🦖' },
     { id: 'highlandExplorer', name: 'Ylämaan Vaeltaja', desc: 'Vieraile Skotlannin nummilla ja Loch Nessillä', target: 1, reward: 20, icon: '🏰' },
-    { id: 'puppyFamily', name: 'Koiraperhe', desc: 'Pelasta kaikki 5 huskypentua mökin pentutarhaan', target: 5, reward: 30, icon: '🐶' }
+    { id: 'puppyFamily', name: 'Koiraperhe', desc: 'Pelasta kaikki 5 huskypentua mökin pentutarhaan', target: 5, reward: 30, icon: '🐶' },
+    { id: 'galapagosExplorer', name: 'Saariston Tutkija', desc: 'Vieraile Galápagosin tulivuorisaarilla', target: 1, reward: 20, icon: '🐢' },
+    { id: 'saunaMaster', name: 'Löylymestari', desc: 'Heitä 20 kauhallista löylyä mökin pihasaunassa', target: 20, reward: 25, icon: '🧖‍♂️' }
   ];
 
   function getAchievementProgress(achId) {
@@ -10341,6 +10494,12 @@
     if (achId === 'puppyFamily') {
       if (!shopData.puppies) return 0;
       return Object.values(shopData.puppies).filter(Boolean).length;
+    }
+    if (achId === 'galapagosExplorer') {
+      return (shopData.unlockedStamps && shopData.unlockedStamps['Galápagos 🇪🇨']) ? 1 : 0;
+    }
+    if (achId === 'saunaMaster') {
+      return shopData.saunaLöylyCount || 0;
     }
     return 0;
   }
@@ -11997,6 +12156,7 @@
     if (countryName === 'Norja 🇳🇴') return 'iceland';
     if (countryName === 'Australia 🇦🇺') return 'brazil';
     if (countryName === 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿') return 'finland';
+    if (countryName === 'Galápagos 🇪🇨') return 'iceland';
     return 'default';
   }
 
@@ -12748,6 +12908,78 @@
   }
 
   window.openPuppiesModal = openPuppiesModal;
+
+  // --- Pihasauna Modal & Toiminnot 🧖‍♂️🔥 ---
+  function openSaunaModal() {
+    running = false;
+    renderSaunaUI();
+    if (saunaOverlay) {
+      saunaOverlay.classList.remove('hidden');
+    }
+    Audio.play('skill');
+  }
+
+  function closeSaunaModal() {
+    if (saunaOverlay) {
+      saunaOverlay.classList.add('hidden');
+    }
+    husky.y += 15;
+    resumeGame();
+  }
+
+  function renderSaunaUI() {
+    if (saunaTempDisplay) {
+      saunaTempDisplay.textContent = `${saunaTemperature} °C`;
+    }
+    if (saunaLoylyCount) {
+      saunaLoylyCount.textContent = `${shopData.saunaLöylyCount || 0} kpl`;
+    }
+    if (saunaBuffStatus) {
+      if (shopData.saunaBuffTimer > 0) {
+        const mins = Math.floor(shopData.saunaBuffTimer / 60);
+        const secs = Math.floor(shopData.saunaBuffTimer % 60);
+        saunaBuffStatus.innerHTML = `<span style="color:#81c784;">Hehku aktiivinen (${mins}m ${secs}s) ✨</span>`;
+      } else {
+        saunaBuffStatus.innerHTML = `<span style="color:#bcaaa4;">Kaipaa saunaa</span>`;
+      }
+    }
+  }
+
+  function saunaThrowLoyly() {
+    saunaTemperature = Math.min(115, saunaTemperature + 5);
+    shopData.saunaLöylyCount = (shopData.saunaLöylyCount || 0) + 1;
+    saveShopData();
+    checkAchievements();
+    renderSaunaUI();
+
+    Audio.play('dash');
+    showBanner(`🪵 Sihisevä kauhallinen heitetty kiukaalle! Lämpötila: ${saunaTemperature}°C! 💨`);
+    spawnBurst(husky.x, husky.y, ['#ffffff', '#fff3e0', '#ffb74d'], 25);
+  }
+
+  function saunaUseVihta() {
+    lives = maxLives;
+    updateHud();
+    renderSaunaUI();
+
+    Audio.play('levelup');
+    showBanner('🌿 Tuore koivuvihta virkisti kehon ja mielen! Kaikki sydämet palautettu! ❤️');
+    spawnBurst(husky.x, husky.y, ['#81c784', '#aed581', '#ffffff'], 30);
+  }
+
+  function saunaColdPlunge() {
+    shopData.saunaBuffTimer = 240; // 4 minuuttia
+    saveShopData();
+    renderSaunaUI();
+
+    Audio.play('legendary');
+    showBanner('❄️ Virkistävä kylmävesipulahdus! Saunan Hehku (+12% nopeus & noutosäde) 4 minuutiksi! ✨');
+    spawnBurst(husky.x, husky.y, ['#00e5ff', '#80d8ff', '#ffffff'], 35);
+  }
+
+  window.openSaunaModal = openSaunaModal;
+  window.closeSaunaModal = closeSaunaModal;
+
   window.closePuppiesModal = closePuppiesModal;
   window.setActivePuppy = setActivePuppy;
   window.petPuppy = petPuppy;
@@ -13270,6 +13502,14 @@
             showBanner('Mene lähemmäs pentutarhaa! 🚶');
           }
         }
+        // Pihasauna (660, 260)
+        else if (clickX >= 605 && clickX <= 715 && clickY >= 180 && clickY <= 310) {
+          if (Math.hypot(husky.x - 660, husky.y - 260) < 115) {
+            openSaunaModal();
+          } else {
+            showBanner('Mene lähemmäs pihasaunaa! 🚶');
+          }
+        }
         // Nuotio (380, 240)
         if (Math.hypot(clickX - 380, clickY - 240) < 50) {
           if (Math.hypot(husky.x - 380, husky.y - 240) < 95) {
@@ -13455,6 +13695,28 @@
     puppiesOverlay.addEventListener('click', (e) => {
       if (e.target === puppiesOverlay) closePuppiesModal();
     });
+  }
+
+  // Pihasauna-kuuntelijat
+  if (saunaBtnOpen) {
+    saunaBtnOpen.addEventListener('click', openSaunaModal);
+  }
+  if (saunaCloseBtn) {
+    saunaCloseBtn.addEventListener('click', closeSaunaModal);
+  }
+  if (saunaOverlay) {
+    saunaOverlay.addEventListener('click', (e) => {
+      if (e.target === saunaOverlay) closeSaunaModal();
+    });
+  }
+  if (saunaThrowBtn) {
+    saunaThrowBtn.addEventListener('click', saunaThrowLoyly);
+  }
+  if (saunaVihtaBtn) {
+    saunaVihtaBtn.addEventListener('click', saunaUseVihta);
+  }
+  if (saunaPlungeBtn) {
+    saunaPlungeBtn.addEventListener('click', saunaColdPlunge);
   }
 
   // Näytä tallennetut ennätykset ja saavutukset jo aloitusruudussa

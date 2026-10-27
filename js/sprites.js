@@ -1754,7 +1754,245 @@ const Sprites = (() => {
     ctx.fill();
   }
 
-  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy };
+    // --- Galápagoksen Jättiläiskilpikonna (Giant Tortoise) 🐢 ---
+  function giant_tortoise(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.45, r * 1.25, r * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    const isRetracted = e && e.fleeing;
+    const tuck = isRetracted ? 0.4 : 1.0;
+
+    // 4 järeää pilarimaista jalkaa kynsillä
+    const legSwing = isRetracted ? 0 : Math.sin(swing * 2) * 0.18;
+    const legColor = '#4a5340';
+    
+    // Takajalat
+    ctx.save();
+    ctx.translate(-r * 0.55, r * 0.35);
+    ctx.rotate(-legSwing * tuck);
+    ctx.fillStyle = legColor;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.28 * tuck, r * 0.32 * tuck, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(-r * 0.25, r * 0.45);
+    ctx.rotate(legSwing * tuck);
+    ctx.fillStyle = legColor;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.26 * tuck, r * 0.30 * tuck, -0.1, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Etujalat
+    ctx.save();
+    ctx.translate(r * 0.45, r * 0.38);
+    ctx.rotate(legSwing * tuck);
+    ctx.fillStyle = legColor;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.30 * tuck, r * 0.35 * tuck, 0.15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(r * 0.2, r * 0.48);
+    ctx.rotate(-legSwing * tuck);
+    ctx.fillStyle = legColor;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.28 * tuck, r * 0.32 * tuck, -0.15, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Pieni tynkähäntä
+    ctx.fillStyle = legColor;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.9, r * 0.05);
+    ctx.lineTo(-r * 1.15 * tuck, r * 0.15);
+    ctx.lineTo(-r * 0.85, r * 0.25);
+    ctx.closePath();
+    ctx.fill();
+
+    // Kilpi (Carapace) - Massiivinen kupolimainen kilpi rengaskuvioineen
+    const shellGrad = ctx.createRadialGradient(-r * 0.1, -r * 0.3, r * 0.2, 0, 0, r * 1.1);
+    shellGrad.addColorStop(0, '#5a4632');
+    shellGrad.addColorStop(0.5, '#3e2e1e');
+    shellGrad.addColorStop(1, '#261b11');
+    ctx.fillStyle = shellGrad;
+    ctx.strokeStyle = '#1e140b';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(0, -r * 0.05, r * 1.05, r * 0.82, -0.05, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Kilven kuviot (suomut/laatat)
+    ctx.strokeStyle = 'rgba(255, 215, 0, 0.22)';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.ellipse(-r * 0.05, -r * 0.18, r * 0.42, r * 0.32, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(r * 0.45, -r * 0.08, r * 0.32, r * 0.28, 0.2, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(-r * 0.52, -r * 0.05, r * 0.32, r * 0.28, -0.2, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Sammallaikku kilvellä
+    ctx.fillStyle = 'rgba(76, 175, 80, 0.35)';
+    ctx.beginPath();
+    ctx.arc(-r * 0.2, -r * 0.35, r * 0.22, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Kaula ja viisas vanha pää
+    const headExt = isRetracted ? 0.3 : 1.0;
+    const hx = r * 0.75 + (isRetracted ? 0 : r * 0.35);
+    const hy = -r * 0.05 - (isRetracted ? 0 : r * 0.25);
+
+    ctx.fillStyle = '#4a5340';
+    ctx.beginPath();
+    ctx.ellipse(r * 0.65, r * 0.05, r * 0.28 * headExt, r * 0.22, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.ellipse(hx, hy, r * 0.36 * headExt, r * 0.26 * headExt, 0.15, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (!isRetracted) {
+      ctx.strokeStyle = '#272d20';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(hx + r * 0.15, hy + r * 0.1);
+      ctx.lineTo(hx + r * 0.32, hy + r * 0.06);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1c1b18';
+      ctx.beginPath();
+      ctx.arc(hx + r * 0.12, hy - r * 0.08, r * 0.07, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(hx + r * 0.14, hy - r * 0.1, r * 0.025, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // --- Galápagoksen Merileguaani (Marine Iguana) 🦎 ---
+  function marine_iguana(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.35, r * 1.1, r * 0.35, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Aaltoileva uimahäntä
+    const tailWave = Math.sin(swing * 3) * 0.35;
+    ctx.save();
+    ctx.translate(-r * 0.6, r * 0.05);
+    ctx.rotate(tailWave);
+    ctx.fillStyle = '#1b2a24';
+    ctx.beginPath();
+    ctx.moveTo(0, -r * 0.18);
+    ctx.quadraticCurveTo(-r * 0.7, r * 0.05, -r * 1.35, r * 0.2);
+    ctx.quadraticCurveTo(-r * 0.65, r * 0.28, 0, r * 0.18);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = '#00e5ff';
+    for (let i = 0; i < 4; i++) {
+      const tx = -r * 0.3 * (i + 1);
+      ctx.beginPath();
+      ctx.arc(tx, -r * 0.08 + i * 0.05 * r, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // 4 raajaa kynsillä
+    const legSwing = Math.sin(swing * 2.5) * 0.25;
+    ctx.fillStyle = '#1f332b';
+    ctx.save();
+    ctx.translate(-r * 0.35, r * 0.25);
+    ctx.rotate(-legSwing);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.18, r * 0.25, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(r * 0.38, r * 0.28);
+    ctx.rotate(legSwing);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.18, r * 0.25, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Keho
+    const bodyGrad = ctx.createLinearGradient(0, -r * 0.4, 0, r * 0.4);
+    bodyGrad.addColorStop(0, '#273b32');
+    bodyGrad.addColorStop(0.5, '#192b23');
+    bodyGrad.addColorStop(1, '#0e1814');
+    ctx.fillStyle = bodyGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.78, r * 0.44, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Selkäpiikit (Dorsal crest)
+    ctx.fillStyle = '#4ade80';
+    for (let i = -3; i <= 3; i++) {
+      const px = i * r * 0.18;
+      const py = -r * 0.38;
+      ctx.beginPath();
+      ctx.moveTo(px - r * 0.05, py + r * 0.08);
+      ctx.lineTo(px, py - r * 0.15);
+      ctx.lineTo(px + r * 0.05, py + r * 0.08);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Pää ja kuono
+    const hx = r * 0.65;
+    const hy = -r * 0.15;
+    ctx.fillStyle = '#22382e';
+    ctx.beginPath();
+    ctx.ellipse(hx, hy, r * 0.36, r * 0.28, 0.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Pään suomut
+    ctx.fillStyle = '#00e5ff';
+    ctx.beginPath();
+    ctx.arc(hx - r * 0.08, hy - r * 0.24, 2.5, 0, Math.PI * 2);
+    ctx.arc(hx + r * 0.05, hy - r * 0.26, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Silmä
+    ctx.fillStyle = '#eab308';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.05, hy - r * 0.08, r * 0.08, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.06, hy - r * 0.08, r * 0.045, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Suolapärske sieraimista
+    if (Math.sin(swing * 4) > 0.65) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.beginPath();
+      ctx.arc(hx + r * 0.38, hy - r * 0.05, 1.8, 0, Math.PI * 2);
+      ctx.arc(hx + r * 0.44, hy - r * 0.12, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy, giant_tortoise, marine_iguana };
 
 
   function drawHat(ctx, r, hatId) {

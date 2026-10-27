@@ -321,6 +321,53 @@
       </div>
     </div>
 
+    <!-- Pihasauna Modal -->
+    <div id="sauna-overlay" class="hidden">
+      <div id="sauna-panel">
+        <h2>🧖‍♂️ Pihasaunan Löylyt 🔥🪵</h2>
+        <p class="sauna-subtitle">Kutsuva hirsisauna mökin takapihalla! Heitä löylyä kiukaalle, nauti koivuvihtomisesta ja pulahda virkistävään kylmäveteen.</p>
+        
+        <div class="sauna-stats-row">
+          <div class="sauna-stat-box">
+            <span class="sauna-stat-icon">🌡️</span>
+            <span class="sauna-stat-label">Lämpötila</span>
+            <span class="sauna-stat-value" id="sauna-temp-display">85 °C</span>
+          </div>
+          <div class="sauna-stat-box">
+            <span class="sauna-stat-icon">💨</span>
+            <span class="sauna-stat-label">Heitetyt löylyt</span>
+            <span class="sauna-stat-value" id="sauna-loyly-count">0 kpl</span>
+          </div>
+          <div class="sauna-stat-box">
+            <span class="sauna-stat-icon">✨</span>
+            <span class="sauna-stat-label">Saunan hehku</span>
+            <span class="sauna-stat-value" id="sauna-buff-status">Kaipaa saunaa</span>
+          </div>
+        </div>
+
+        <div class="sauna-actions-grid">
+          <button id="sauna-throw-btn" class="sauna-action-btn loyly-btn">
+            <span class="btn-emoji">🪵💨</span>
+            <span class="btn-title">Heitä Löylyä!</span>
+            <span class="btn-desc">Sihahdus kuumille kiuaskiville! (+5 °C &amp; rentoutusta)</span>
+          </button>
+          <button id="sauna-vihta-btn" class="sauna-action-btn vihta-btn">
+            <span class="btn-emoji">🌿</span>
+            <span class="btn-title">Koivuvihta</span>
+            <span class="btn-desc">Vihtominen palauttaa elämät maksimiin ❤️</span>
+          </button>
+          <button id="sauna-plunge-btn" class="sauna-action-btn plunge-btn">
+            <span class="btn-emoji">❄️🌊</span>
+            <span class="btn-title">Kylmävesipulahdus</span>
+            <span class="btn-desc">Virkistys: +12% nopeus &amp; noutosäde seikkailuun (4 min)!</span>
+          </button>
+        </div>
+
+        <button id="sauna-close-btn">Poistu Saunasta</button>
+      </div>
+    </div>
+
+
 
     <!-- Aloitus-/lopetusnäyttö -->
     <div id="overlay">
@@ -350,6 +397,7 @@
             <button id="talents-btn-open">Koulutus 🎓</button>
             <button id="fossils-btn-open">Fossiilit 🦖</button>
             <button id="puppies-btn-open">Pennut 🐶</button>
+            <button id="sauna-btn-open">Sauna 🧖‍♂️</button>
           </div>
         </div>
       </div>
