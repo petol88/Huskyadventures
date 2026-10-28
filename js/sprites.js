@@ -1992,7 +1992,276 @@ const Sprites = (() => {
     }
   }
 
-  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy, giant_tortoise, marine_iguana };
+    // --- Intian Aasiannorsu (Asian Elephant) 🐘 ---
+  function elephant(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.55, r * 1.35, r * 0.6, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    const legSwing = Math.sin(swing * 2) * 0.2;
+    const legCol = '#6b7280';
+    const nailCol = '#e5e7eb';
+    
+    // Takajalat
+    for (let i = -1; i <= 1; i += 2) {
+      ctx.save();
+      const lx = (i === -1 ? -r * 0.65 : -r * 0.3);
+      ctx.translate(lx, r * 0.38);
+      ctx.rotate(i * legSwing);
+      ctx.fillStyle = legCol;
+      ctx.beginPath();
+      ctx.rect(-r * 0.16, -r * 0.1, r * 0.32, r * 0.52);
+      ctx.fill();
+      ctx.fillStyle = nailCol;
+      ctx.beginPath();
+      ctx.arc(-r * 0.08, r * 0.38, 2.5, 0, Math.PI * 2);
+      ctx.arc(0, r * 0.4, 2.5, 0, Math.PI * 2);
+      ctx.arc(r * 0.08, r * 0.38, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Etujalat
+    for (let i = -1; i <= 1; i += 2) {
+      ctx.save();
+      const lx = (i === -1 ? r * 0.25 : r * 0.55);
+      ctx.translate(lx, r * 0.38);
+      ctx.rotate(-i * legSwing);
+      ctx.fillStyle = legCol;
+      ctx.beginPath();
+      ctx.rect(-r * 0.16, -r * 0.1, r * 0.32, r * 0.52);
+      ctx.fill();
+      ctx.fillStyle = nailCol;
+      ctx.beginPath();
+      ctx.arc(-r * 0.08, r * 0.38, 2.5, 0, Math.PI * 2);
+      ctx.arc(0, r * 0.4, 2.5, 0, Math.PI * 2);
+      ctx.arc(r * 0.08, r * 0.38, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Häntä
+    ctx.strokeStyle = '#4b5563';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.9, -r * 0.05);
+    ctx.quadraticCurveTo(-r * 1.15, r * 0.1, -r * 1.1, r * 0.38);
+    ctx.stroke();
+    ctx.fillStyle = '#1f2937';
+    ctx.beginPath();
+    ctx.arc(-r * 1.1, r * 0.4, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Keho
+    const bodyGrad = ctx.createRadialGradient(-r * 0.1, -r * 0.2, r * 0.2, 0, 0, r * 1.1);
+    bodyGrad.addColorStop(0, '#9ca3af');
+    bodyGrad.addColorStop(0.6, '#6b7280');
+    bodyGrad.addColorStop(1, '#4b5563');
+    ctx.fillStyle = bodyGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 1.05, r * 0.78, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Korva
+    const earFlap = Math.sin(swing * 2.5) * 0.12;
+    ctx.save();
+    ctx.translate(r * 0.4, -r * 0.2);
+    ctx.rotate(earFlap);
+    ctx.fillStyle = '#6b7280';
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.38, r * 0.55, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fbcfe8';
+    ctx.beginPath();
+    ctx.ellipse(-r * 0.02, 0, r * 0.22, r * 0.38, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Pää
+    const hx = r * 0.75, hy = -r * 0.12;
+    ctx.fillStyle = '#6b7280';
+    ctx.beginPath();
+    ctx.ellipse(hx, hy, r * 0.48, r * 0.44, 0.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Syöksyhammas
+    ctx.save();
+    ctx.fillStyle = '#fef08a';
+    ctx.strokeStyle = '#eab308';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(hx + r * 0.18, hy + r * 0.18);
+    ctx.quadraticCurveTo(hx + r * 0.48, hy + r * 0.35, hx + r * 0.62, hy + r * 0.15);
+    ctx.quadraticCurveTo(hx + r * 0.44, hy + r * 0.22, hx + r * 0.15, hy + r * 0.24);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+
+    // Kärsä
+    const trunkWave = Math.sin(swing * 2) * 0.2;
+    ctx.strokeStyle = '#6b7280';
+    ctx.lineWidth = r * 0.28;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(hx + r * 0.22, hy + r * 0.15);
+    ctx.quadraticCurveTo(hx + r * 0.45 + trunkWave * 15, hy + r * 0.45, hx + r * 0.65, hy + r * 0.7 + trunkWave * 20);
+    ctx.stroke();
+
+    // Kärsän pää
+    ctx.fillStyle = '#fbcfe8';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.65, hy + r * 0.7 + trunkWave * 20, r * 0.07, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Vesisuihku
+    if (Math.sin(swing * 3.5) > 0.6) {
+      ctx.fillStyle = '#38bdf8';
+      for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(hx + r * 0.75 + i * 5, hy + r * 0.68 - i * 6 + trunkWave * 20, 2 + i * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Silmä
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.1, hy - r * 0.1, r * 0.065, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.12, hy - r * 0.12, r * 0.025, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // --- Intian Kuningasriikinkukko (Indian Peacock) 🦚 ---
+  function peacock(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.4, r * 1.0, r * 0.35, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Pyrstöviuhka
+    const fanPulse = 0.95 + 0.08 * Math.sin(swing * 3);
+    const numFeathers = 9;
+    ctx.save();
+    ctx.translate(-r * 0.3, -r * 0.1);
+    for (let i = 0; i < numFeathers; i++) {
+      const angle = -Math.PI * 0.75 + (i / (numFeathers - 1)) * Math.PI * 0.9;
+      const fLen = r * 1.35 * fanPulse;
+      const fx = Math.cos(angle) * fLen;
+      const fy = Math.sin(angle) * fLen;
+
+      ctx.strokeStyle = '#059669';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(fx, fy);
+      ctx.stroke();
+
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.arc(fx, fy, r * 0.22, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.arc(fx, fy, r * 0.15, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(fx, fy, r * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#00e5ff';
+      ctx.beginPath();
+      ctx.arc(fx + 1, fy - 1, r * 0.035, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Jalat
+    const legSwing = Math.sin(swing * 3) * 0.25;
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-r * 0.1, r * 0.2);
+    ctx.lineTo(-r * 0.1 + legSwing * 10, r * 0.6);
+    ctx.moveTo(r * 0.15, r * 0.2);
+    ctx.lineTo(r * 0.15 - legSwing * 10, r * 0.6);
+    ctx.stroke();
+
+    // Keho
+    const bodyGrad = ctx.createLinearGradient(0, -r * 0.3, 0, r * 0.3);
+    bodyGrad.addColorStop(0, '#0284c7');
+    bodyGrad.addColorStop(0.6, '#0369a1');
+    bodyGrad.addColorStop(1, '#1e3a8a');
+    ctx.fillStyle = bodyGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.45, r * 0.32, -0.15, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Kaula ja pää
+    const hx = r * 0.38, hy = -r * 0.42;
+    ctx.strokeStyle = '#0284c7';
+    ctx.lineWidth = r * 0.26;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(r * 0.1, -r * 0.1);
+    ctx.quadraticCurveTo(r * 0.22, -r * 0.28, hx, hy);
+    ctx.stroke();
+
+    ctx.fillStyle = '#0284c7';
+    ctx.beginPath();
+    ctx.arc(hx, hy, r * 0.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Kruunu
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.2;
+    for (let c = -1; c <= 1; c++) {
+      const cx = hx + c * 3;
+      const cy = hy - r * 0.32;
+      ctx.beginPath();
+      ctx.moveTo(hx, hy - r * 0.15);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+      ctx.fillStyle = '#00e5ff';
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Nokka
+    ctx.fillStyle = '#fbbf24';
+    ctx.beginPath();
+    ctx.moveTo(hx + r * 0.15, hy - r * 0.05);
+    ctx.lineTo(hx + r * 0.38, hy + r * 0.02);
+    ctx.lineTo(hx + r * 0.14, hy + r * 0.1);
+    ctx.closePath();
+    ctx.fill();
+
+    // Silmä
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.06, hy - r * 0.06, r * 0.05, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.07, hy - r * 0.07, r * 0.02, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy, giant_tortoise, marine_iguana, elephant, peacock };
 
 
   function drawHat(ctx, r, hatId) {

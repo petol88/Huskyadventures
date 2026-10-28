@@ -375,7 +375,7 @@ class Prey {
   constructor(x, y, kind = 'rabbit') {
     this.x = x;
     this.y = y;
-    this.radius = (kind === 'giant_tortoise') ? 22 : ((kind === 'marine_iguana') ? 16 : ((kind === 'highland_cow') ? 20 : ((kind === 'nessie') ? 22 : ((kind === 'deer' || kind === 'mountain_goat' || kind === 'kangaroo') ? 17 : (kind === 'monkey' ? 14 : (kind === 'coconut_crab' ? 16 : (kind === 'weasel' ? 10 : 13)))))));
+    this.radius = (kind === 'elephant') ? 24 : ((kind === 'peacock') ? 15 : ((kind === 'giant_tortoise') ? 22 : ((kind === 'marine_iguana') ? 16 : ((kind === 'highland_cow') ? 20 : ((kind === 'nessie') ? 22 : ((kind === 'deer' || kind === 'mountain_goat' || kind === 'kangaroo') ? 17 : (kind === 'monkey' ? 14 : (kind === 'coconut_crab' ? 16 : (kind === 'weasel' ? 10 : 13)))))))));
     this.kind = kind;
     // Lajikohtaiset ominaisuudet tuovat vaihtelua
     const stats = {
@@ -398,12 +398,14 @@ class Prey {
       nessie:          { speed: 165, fleeDist: 170 },
       giant_tortoise:  { speed: 88,  fleeDist: 110 },
       marine_iguana:   { speed: 155, fleeDist: 145 },
+      elephant:        { speed: 115, fleeDist: 130 },
+      peacock:         { speed: 195, fleeDist: 180 },
     };
     const s = stats[kind] || stats.rabbit;
     this.speed = s.speed;
     this.fleeDist = s.fleeDist;
     this.alive = true;
-    this.erratic = kind === 'bird' || kind === 'bat' || kind === 'monkey' || kind === 'seagull' || kind === 'weasel' || kind === 'golden_squirrel';
+    this.erratic = kind === 'bird' || kind === 'bat' || kind === 'monkey' || kind === 'seagull' || kind === 'weasel' || kind === 'golden_squirrel' || kind === 'peacock';
     this.stolenBones = 0;
     this.zigTimer = 0;
     this.zigSign = 1;

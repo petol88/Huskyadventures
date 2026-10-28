@@ -141,6 +141,14 @@
   const saunaLoylyCount = document.getElementById('sauna-loyly-count');
   const saunaBuffStatus = document.getElementById('sauna-buff-status');
 
+  const toyboxOverlay = document.getElementById('toybox-overlay');
+  const toyboxBtnOpen = document.getElementById('toybox-btn-open');
+  const toyboxCloseBtn = document.getElementById('toybox-close-btn');
+  const toyboxGrid = document.getElementById('toybox-grid');
+  const toyboxFetchCount = document.getElementById('toybox-fetch-count');
+  const toyboxActiveName = document.getElementById('toybox-active-name');
+  const throwToyBtn = document.getElementById('throw-toy-btn');
+
 
   if (muteBtn) {
     muteBtn.addEventListener('click', () => {
@@ -211,7 +219,10 @@
       prey: ['rabbit', 'mouse', 'bird', 'weasel', 'highland_cow', 'nessie'] },
     { id: 'galapagos', name: 'Galápagossaaret', emoji: '🐢', ground: '#232120', grid: 'rgba(21, 122, 127, 0.08)',
       rockFill: '#3a3335', rockStroke: '#157a7f', bushFill: '#2d6a4f', bushEmoji: '🌵',
-      prey: ['rabbit', 'bird', 'giant_tortoise', 'marine_iguana'] }
+      prey: ['rabbit', 'bird', 'giant_tortoise', 'marine_iguana'] },
+    { id: 'palace_jungle', name: 'Palatsiviidakko', emoji: '🕌', ground: '#5a2d1d', grid: 'rgba(212, 175, 55, 0.08)',
+      rockFill: '#8d5b38', rockStroke: '#d4af37', bushFill: '#2d5a27', bushEmoji: '🪷',
+      prey: ['rabbit', 'mouse', 'bird', 'monkey', 'elephant', 'peacock'] }
   ];
   const WORLD_TOUR_DESTINATIONS = [
     { country: 'Suomi 🇫🇮', region: 'Lapin metsät', biomeId: 'forest' },
@@ -225,7 +236,8 @@
     { country: 'USA 🇺🇸', region: 'Uuden-Englannin ruskarunsaat', biomeId: 'autumn_woods' },
     { country: 'Japani 🇯🇵', region: 'Kioton kristalliluolat', biomeId: 'crystals' },
     { country: 'Norja 🇳🇴', region: 'Tromssan revontulilaakso', biomeId: 'aurora' },
-    { country: 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', region: 'Ylämaat & Loch Ness', biomeId: 'highlands' }
+    { country: 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', region: 'Ylämaat & Loch Ness', biomeId: 'highlands' },
+    { country: 'Intia 🇮🇳', region: 'Palatsiviidakko & Temppelit', biomeId: 'palace_jungle' }
   ];
 
   const ISLAND_TOUR_DESTINATIONS = [
@@ -372,6 +384,12 @@
       notes: 'Mustaa laavahiekkaa ja kristallinkirkasta turkoosia merta! Ikivanhat jättiläiskilpikonnat vaeltelivat kaktuspensaiden lomassa ja merileguaanit ottivat aurinkoa tummilla kallioilla puhallellen suolaa sieraimistaan. Löysimme rannalta muinaisen kilpikonnan suojakilven!',
       collectible: 'Muinainen Kilpikonnan Kilpi 🛡️',
       stampStyle: 'passport-stamp-design teal'
+    },
+    'Intia 🇮🇳': {
+      title: 'Intia 🇮🇳',
+      notes: 'Lämpimän maustetuulen puhaltaessa saavuimme mahtaviin palatsiviidakoihin! Ystävällinen aasiannorsu tervehti meitä kärsällään ja kuningasriikinkukot levittivät smaragdinsiniset pyrstönsä. Muinaiselta marmoritemppeliltä löysimme lumoavan kultaisen lootuskukan!',
+      collectible: 'Kultainen Lootuskukka 🪷',
+      stampStyle: 'passport-stamp-design gold'
     }
   };
 
@@ -379,7 +397,7 @@
   const passportList = [
     'Suomi 🇫🇮', 'Sveitsi 🇨🇭', 'Egypti 🇪🇬', 'Brasilia 🇧🇷', 'Islanti 🇮🇸',
     'Louisiana 🇺🇸', 'Kanada 🇨🇦', 'Kiina 🇨🇳', 'USA 🇺🇸', 'Japani 🇯🇵', 'Norja 🇳🇴',
-    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Galápagos 🇪🇨'
+    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Galápagos 🇪🇨', 'Intia 🇮🇳'
   ];
 
   function openPassport() {
@@ -562,6 +580,13 @@
       artwork: '🐢🌋',
       background: 'linear-gradient(135deg, #1f2937, #064e3b)',
       letter: 'Terveisiä Charles Darwinin jalanjäljiltä Galápagoksilta!\n\nTämä tulivuorisaaristo on täynnä ihmeellistä luontoa! Jättiläiskilpikonnat ovat uskomattoman suuria ja ystävällisiä, ja merileguaanit sukeltavat aalloissa! Saimme matkamuistoksi muinaisen kilpikonnan maagisen suojakilven.\n\nTerveisin,\nCompanion & Husky 🐢'
+    },
+    'Intia 🇮🇳': {
+      title: 'VIIDAKKOPALATSIT & ELEFANTIT',
+      flag: '🇮🇳',
+      artwork: '🐘🪷',
+      background: 'linear-gradient(135deg, #7c2d12, #047857)',
+      letter: 'Namaste intialaisista palatsiviidakoista!\n\nTäällä historia ja luonto kohtaavat satumaisella tavalla! Aasiannorsut ovat valtavia ja kilttejä, ja riikinkukkojen pyrstöt häikäisevät auringossa! Saimme temppelin munkilta kultaisen lootuskukan, joka hehkuu rauhaa ja elinvoimaa.\n\nTerveisin,\nCompanion & Husky 🐘'
     }
   };
 
@@ -1396,6 +1421,8 @@
   let nearWishingWell = false;
   let nearPuppyNursery = false;
   let nearSauna = false;
+  let nearToybox = false;
+  let lotusHealTimer = 0;
   let galapagosShieldUsed = false;
   let saunaTemperature = 85;
   let activePuppyFollower = null;
@@ -1836,6 +1863,8 @@
         }
         if (typeof shopData.saunaLöylyCount !== 'number') shopData.saunaLöylyCount = 0;
         if (typeof shopData.saunaBuffTimer !== 'number') shopData.saunaBuffTimer = 0;
+        if (typeof shopData.activeToy !== 'string') shopData.activeToy = 'ball';
+        if (typeof shopData.fetchCount !== 'number') shopData.fetchCount = 0;
       }
     } catch (e) {
       console.error("Error loading shop data, resetting:", e);
@@ -3688,13 +3717,13 @@
   // --- Apufunktiot bestiarialle ---
   function preyEmoji(kind) {
     return {
-      giant_tortoise:'🐢', marine_iguana:'🦎', highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
+      elephant:'🐘', peacock:'🦚', giant_tortoise:'🐢', marine_iguana:'🦎', highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
       bear:'🐻', wolf:'🐺', fox:'🦊', lynx:'🐱', eagle:'🦅', owl:'🦉', yeti:'❄️', scorpion:'🦂', crocodile:'🐊', panther:'🐆', shark:'🦈'
     }[kind] || '🐾';
   }
   function preyFinnish(kind) {
     return {
-      giant_tortoise:'Jättiläiskilpikonna', marine_iguana:'Merileguaani', highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
+      elephant:'Aasiannorsu', peacock:'Kuningasriikinkukko', giant_tortoise:'Jättiläiskilpikonna', marine_iguana:'Merileguaani', highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
       bear:'Karhu', wolf:'Susi', fox:'Kettu', lynx:'Ilves', eagle:'Jättikotka', owl:'Pöllö', yeti:'Jeti', scorpion:'Skorpioni', crocodile:'Krokotiili', panther:'Pantteri', shark:'Hai'
     }[kind] || kind;
   }
@@ -4237,6 +4266,22 @@
         spawnBurst(husky.x, husky.y, ['#ffcc80', '#ffffff', '#e0f7fa'], 2);
       }
     }
+    // Kultaisen lootuskukan elinvoiman regeneraatio (Intia)
+    if (shopData.unlockedStamps && shopData.unlockedStamps['Intia 🇮🇳']) {
+      lotusHealTimer = (lotusHealTimer || 0) + dt;
+      if (lotusHealTimer >= 45) {
+        lotusHealTimer = 0;
+        if (lives < maxLives) {
+          lives++;
+          updateHud();
+          spawnTextParticle(husky.x, husky.y - 22, "LOOTUKSEN ELINVOIMA! 🪷+1❤️", "#ffd700", "bold 13px sans-serif");
+          spawnBurst(husky.x, husky.y, ['#ffd700', '#fbcfe8', '#ffffff'], 20);
+          Audio.play('goldbone');
+          showBanner('🪷 Kultainen Lootuskukka palautti elinvoiman! +1 ❤️');
+        }
+      }
+    }
+
     collectBones(dt);
     Audio.setTension(0);
     if (invulnTimer > 0) invulnTimer -= dt;
@@ -4263,6 +4308,7 @@
     nearCabinet = (interior.kind === 'house' && shopData.cabinUpgrades.trophyWall && Math.hypot(husky.x - 163, husky.y - 170) < 65);
     nearGramophone = (interior.kind === 'house' && shopData.cabinUpgrades.gramophone && Math.hypot(husky.x - 480, husky.y - 95) < 65);
     nearPlaque = (interior.kind === 'house' && shopData.cabinUpgrades.achievementsPlaque && Math.hypot(husky.x - 260, husky.y - 120) < 65);
+    nearToybox = (interior.kind === 'house' && Math.hypot(husky.x - 480, husky.y - 290) < 65);
     nearCookingPot = (interior.kind === 'house' && Math.hypot(husky.x - 425, husky.y - 120) < 65);
     nearPlanter = (interior.kind === 'house' && shopData.cabinUpgrades.planterPots && Math.hypot(husky.x - 320, husky.y - 120) < 65);
     nearDiploma = (interior.kind === 'house' && Math.hypot(husky.x - 350, husky.y - 100) < 55);
@@ -4304,6 +4350,8 @@
         openGramophone();
       } else if (nearPlaque) {
         openAchievementsModal();
+      } else if (nearToybox) {
+        openToyboxModal();
       } else if (nearCookingPot) {
         openCookingModal();
       } else if (nearPlanter) {
@@ -4397,20 +4445,30 @@
     husky.throwCd = (husky.throwCd || 0) - dt;
     if (Input.consumeThrow() && husky.throwCd <= 0) {
       husky.throwCd = 1.6;
+      const toyType = shopData.activeToy || 'ball';
       const angle = husky.facing || 0;
-      const speed = 420;
-      Audio.play('tick');
+      let speed = 430;
+      let emoji = '🎾';
+      let bounces = 3;
+      if (toyType === 'frisbee') { speed = 580; emoji = '🥏'; bounces = 1; }
+      else if (toyType === 'duck') { speed = 380; emoji = '🦆'; bounces = 4; Audio.play('whoosh'); }
+      else if (toyType === 'rope') { speed = 390; emoji = '🪢'; bounces = 2; }
+      else { Audio.play('tick'); }
+
       thrownToys.push({
         x: husky.x,
         y: husky.y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        radius: 7,
+        radius: 8,
         bounceCount: 0,
-        maxBounces: 3,
-        life: 5.0
+        maxBounces: bounces,
+        life: 6.0,
+        toyType: toyType,
+        emoji: emoji,
+        isFetched: false
       });
-      spawnTextParticle(husky.x, husky.y - 12, "HEITTO! 🎾", "#a2e85a");
+      spawnTextParticle(husky.x, husky.y - 12, `HEITTO! ${emoji}`, "#a2e85a");
     }
 
     // --- Heitettyjen lelu fysiikat ja bounssit ---
@@ -4600,13 +4658,23 @@
         const distToToy = Math.hypot(companion.x - targetToy.x, companion.y - targetToy.y);
         if (distToToy < companion.radius + targetToy.radius + 12) {
           targetToy.life = 0;
-          spawnTextParticle(companion.x, companion.y - 12, "NOUTI! 🎾🐕", "#ffd700");
+          const toyEmoji = targetToy.emoji || '🎾';
+          spawnTextParticle(companion.x, companion.y - 12, `NOUTI! ${toyEmoji}🐕`, "#ffd700");
           Audio.play('goldbone');
+          shopData.fetchCount = (shopData.fetchCount || 0) + 1;
+          const bonusXP = targetToy.toyType === 'rope' ? 30 : 15;
+          addXp(bonusXP);
+          saveShopData();
+          checkAchievements();
+
+          if (activePuppyFollower && shopData.puppyHappiness && activePuppyFollower.puppyType) {
+            shopData.puppyHappiness[activePuppyFollower.puppyType] = Math.min(100, (shopData.puppyHappiness[activePuppyFollower.puppyType] || 80) + 15);
+          }
           
           const multiplier = 1.3;
           perks.speedMul = (perks.speedMul || 1.0) * multiplier;
-          showBanner('🎾 NOUTOLEIKKI! Innostus antoi +30 % nopeutta!');
-          spawnTextParticle(husky.x, husky.y - 15, "INNOSTUS! 🐾🎾", "#ffd700");
+          showBanner(`🐾 NOUTO! Kaveri toi lelun ${toyEmoji} takaisin! Innostus antoi +30% nopeutta ja +${bonusXP} XP! ❤️`);
+          spawnTextParticle(husky.x, husky.y - 15, `INNOSTUS! 🐾${toyEmoji}`, "#ffd700");
           setTimeout(() => {
             perks.speedMul /= multiplier;
           }, 3000);
@@ -5101,7 +5169,7 @@
             showBanner('🐒 Sait apinan kiinni ja sait aarteesi takaisin!');
           }
 
-          let pts = (p.kind === 'nessie' ? 6 : (p.kind === 'giant_tortoise' ? 5 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'marine_iguana' ? 4 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))))) * comboMul + monkeyBonus;
+          let pts = (p.kind === 'elephant' ? 6 : (p.kind === 'nessie' ? 6 : (p.kind === 'peacock' ? 5 : (p.kind === 'giant_tortoise' ? 5 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'marine_iguana' ? 4 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))))))) * comboMul + monkeyBonus;
           if (p.kind === 'weasel') pts *= 2;
           if (p.elite) pts *= 3;
 
@@ -6557,6 +6625,21 @@
         ctx.font = '13px sans-serif';
         ctx.fillText('🎾', 482, 286);
         ctx.fillText('🦴', 496, 286);
+
+      if (nearToybox) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.fillRect(480 - 110, 328, 220, 24);
+        ctx.strokeStyle = '#ffd54f';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(480 - 110, 328, 220, 24);
+        ctx.fillStyle = '#ffecb3';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Paina E tai klikkaa: Lelukoppa 🎾🧸', 480, 340);
+        ctx.restore();
+      }
         if (upg.toybox === 2) {
           ctx.fillText('🧸', 510, 286);
         }
@@ -7882,7 +7965,7 @@
     function generateWorldMapDeco(mode) {
       worldMapDeco = [];
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 8 : 12;
+      const ROWS = isIsland ? 8 : 13;
       const PANEL_H = ROWS * 100;
       const PANEL_W = 480;
 
@@ -7966,7 +8049,7 @@
 
     function generateWorldMap(mode) {
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 8 : 12;
+      const ROWS = isIsland ? 8 : 13;
       const COLS = 3;
       const PANEL_W = 480;
       const PANEL_H = ROWS * 100;
@@ -9206,7 +9289,8 @@
       'Havaiji 🌋': { emoji: '📿', name: 'Laavakivi-amuletti', desc: 'Nouda pyhä tulivuoren laavakivi-amuletti' },
       'Australia 🇦🇺': { emoji: '🪃', name: 'Kultainen Bumerangi', desc: 'Löydä punaiselle hiekalle kätketty muinainen bumerangi' },
       'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': { emoji: '🎶', name: 'Kultainen Säkkipilli', desc: 'Löydä vanhojen linnanraunioiden kätköistä kultainen säkkipilli' },
-      'Galápagos 🇪🇨': { emoji: '🛡️', name: 'Muinainen Kilvenkappale', desc: 'Löydä laavasaaren rannalta muinainen jättiläiskilpikonnan suojakilpi' }
+      'Galápagos 🇪🇨': { emoji: '🛡️', name: 'Muinainen Kilvenkappale', desc: 'Löydä laavasaaren rannalta muinainen jättiläiskilpikonnan suojakilpi' },
+      'Intia 🇮🇳': { emoji: '🪷', name: 'Kultainen Lootuskukka', desc: 'Etsi palatsin lummelammikolta muinainen pyhä kultalootus' }
     };
     
     const q = questDb[dest.country];
@@ -10022,6 +10106,8 @@
     { id: 'nessie', name: 'Loch Nessin Hirviö', emoji: '🦕', desc: 'Muinaisten vesien salaperäinen ja ystävällinen asukki. Vilahtaa vain nummijokien ja sumuisten järvien aalloissa!' },
     { id: 'giant_tortoise', name: 'Jättiläiskilpikonna', emoji: '🐢', desc: 'Galápagossaarten ikivanha ja rauhallinen suuri matelija. Vetää päänsä ja jalkansa suojaan kun sitä lähestytään nopeasti.' },
     { id: 'marine_iguana', name: 'Merileguaani', emoji: '🦎', desc: 'Meren aalloissa uiva ja mustilla laavakallioilla lekotteleva leguaani, joka puhaltaa suolasuihkuja.' },
+    { id: 'elephant', name: 'Aasiannorsu', emoji: '🐘', desc: 'Palatsiviidakon lempeä jättiläinen. Heiluttaa suuria korviaan, suihkuttaa vettä kärsällään ja antaa eksoottisia hedelmiä.' },
+    { id: 'peacock', name: 'Kuningasriikinkukko', emoji: '🦚', desc: 'Häikäisevän kaunis smaragdinsininen lintu, joka levittää kimmeltävän silmähöyhenviuhkan.' },
   ];
 
   const CODEX_PREDATORS = [
@@ -10440,7 +10526,9 @@
     { id: 'highlandExplorer', name: 'Ylämaan Vaeltaja', desc: 'Vieraile Skotlannin nummilla ja Loch Nessillä', target: 1, reward: 20, icon: '🏰' },
     { id: 'puppyFamily', name: 'Koiraperhe', desc: 'Pelasta kaikki 5 huskypentua mökin pentutarhaan', target: 5, reward: 30, icon: '🐶' },
     { id: 'galapagosExplorer', name: 'Saariston Tutkija', desc: 'Vieraile Galápagosin tulivuorisaarilla', target: 1, reward: 20, icon: '🐢' },
-    { id: 'saunaMaster', name: 'Löylymestari', desc: 'Heitä 20 kauhallista löylyä mökin pihasaunassa', target: 20, reward: 25, icon: '🧖‍♂️' }
+    { id: 'saunaMaster', name: 'Löylymestari', desc: 'Heitä 20 kauhallista löylyä mökin pihasaunassa', target: 20, reward: 25, icon: '🧖‍♂️' },
+    { id: 'indiaExplorer', name: 'Viidakon Valtias', desc: 'Vieraile Intian palatsiviidakoissa ja temppeleillä', target: 1, reward: 20, icon: '🐘' },
+    { id: 'fetchMaster', name: 'Noutomestari', desc: 'Heitä ja nouda leluja 15 kertaa kaverisi kanssa', target: 15, reward: 25, icon: '🎾' }
   ];
 
   function getAchievementProgress(achId) {
@@ -10500,6 +10588,12 @@
     }
     if (achId === 'saunaMaster') {
       return shopData.saunaLöylyCount || 0;
+    }
+    if (achId === 'indiaExplorer') {
+      return (shopData.unlockedStamps && shopData.unlockedStamps['Intia 🇮🇳']) ? 1 : 0;
+    }
+    if (achId === 'fetchMaster') {
+      return shopData.fetchCount || 0;
     }
     return 0;
   }
@@ -12157,6 +12251,7 @@
     if (countryName === 'Australia 🇦🇺') return 'brazil';
     if (countryName === 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿') return 'finland';
     if (countryName === 'Galápagos 🇪🇨') return 'iceland';
+    if (countryName === 'Intia 🇮🇳') return 'brazil';
     return 'default';
   }
 
@@ -12980,6 +13075,106 @@
   window.openSaunaModal = openSaunaModal;
   window.closeSaunaModal = closeSaunaModal;
 
+  // --- Koirien Lelukoppa & Noutoleikit 🎾🧸 ---
+  const TOYS_DATA = [
+    { id: 'ball', name: 'Tennispallo', emoji: '🎾', desc: 'Superkimmoisa keltainen pallo! Pomppii esteistä ja villitsee koirat vauhdikkaaseen noutoon.', perk: '⚡ Kimmoisuus & Vauhti' },
+    { id: 'duck', name: 'Vinku-Ankka', emoji: '🦆', desc: 'Hauska vinkuva kumiankka. Vinkuääni hämää lähistöllä olevia petoja 3 sekunniksi!', perk: '🛡️ Petojen hämäys' },
+    { id: 'frisbee', name: 'Kultainen Frisbee', emoji: '🥏', desc: 'Aerodynaaminen heittokiekko, joka liitää pitkälle ilmassa suoralla liitoradalla.', perk: '💨 Pitkä liitorata' },
+    { id: 'rope', name: 'Punosköysi', emoji: '🪢', desc: 'Kestävä puuvillainen vetolelu. Antaa noudettaessa tupla-XP:tä ja suuren onnellisuusbonuksen!', perk: '❤️ +30 XP & Ilo' }
+  ];
+
+  function openToyboxModal() {
+    running = false;
+    renderToyboxUI();
+    if (toyboxOverlay) {
+      toyboxOverlay.classList.remove('hidden');
+    }
+    Audio.play('skill');
+  }
+
+  function closeToyboxModal() {
+    if (toyboxOverlay) {
+      toyboxOverlay.classList.add('hidden');
+    }
+    husky.y += 15;
+    resumeGame();
+  }
+
+  function selectToy(toyId) {
+    shopData.activeToy = toyId;
+    saveShopData();
+    renderToyboxUI();
+    Audio.play('goldbone');
+    const toy = TOYS_DATA.find(t => t.id === toyId);
+    if (toy) {
+      showBanner(`Valittu lelu: ${toy.name} ${toy.emoji}! Heitä painamalla Q tai 🎾-napista!`);
+      if (throwToyBtn) throwToyBtn.textContent = toy.emoji;
+    }
+  }
+
+  function renderToyboxUI() {
+    if (!toyboxGrid) return;
+    const active = shopData.activeToy || 'ball';
+    
+    toyboxGrid.innerHTML = TOYS_DATA.map(t => {
+      const isSel = (t.id === active);
+      return `
+        <div class="toy-card ${isSel ? 'active' : ''}">
+          <div class="toy-avatar">${t.emoji}</div>
+          <div class="toy-name">${t.name}</div>
+          <div class="toy-desc">${t.desc}</div>
+          <div class="toy-perk">${t.perk}</div>
+          <button class="toy-select-btn" onclick="selectToy('${t.id}')">
+            ${isSel ? 'Valittuna ✔️' : 'Valitse lelu 🐾'}
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    if (toyboxFetchCount) {
+      toyboxFetchCount.textContent = `${shopData.fetchCount || 0}`;
+    }
+    if (toyboxActiveName) {
+      const cur = TOYS_DATA.find(t => t.id === active);
+      toyboxActiveName.textContent = cur ? `${cur.name} ${cur.emoji}` : 'Tennispallo 🎾';
+    }
+  }
+
+  function throwActiveToy() {
+    if (husky.throwCd > 0) return;
+    husky.throwCd = 1.4;
+    const toyType = shopData.activeToy || 'ball';
+    const angle = husky.facing || 0;
+    let speed = 430;
+    let emoji = '🎾';
+    let bounces = 3;
+    if (toyType === 'frisbee') { speed = 580; emoji = '🥏'; bounces = 1; }
+    else if (toyType === 'duck') { speed = 380; emoji = '🦆'; bounces = 4; Audio.play('whoosh'); }
+    else if (toyType === 'rope') { speed = 390; emoji = '🪢'; bounces = 2; }
+    else { Audio.play('tick'); }
+
+    thrownToys.push({
+      x: husky.x,
+      y: husky.y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      radius: 8,
+      bounceCount: 0,
+      maxBounces: bounces,
+      life: 6.0,
+      toyType: toyType,
+      emoji: emoji,
+      isFetched: false
+    });
+    spawnTextParticle(husky.x, husky.y - 12, `HEITTO! ${emoji}`, "#a2e85a");
+  }
+
+  window.openToyboxModal = openToyboxModal;
+  window.closeToyboxModal = closeToyboxModal;
+  window.selectToy = selectToy;
+  window.throwActiveToy = throwActiveToy;
+
+
   window.closePuppiesModal = closePuppiesModal;
   window.setActivePuppy = setActivePuppy;
   window.petPuppy = petPuppy;
@@ -13492,6 +13687,15 @@
         }
       }
 
+      // Lelukoppa (x: 450..510, y: 260..320)
+      if (interior.kind === 'house' && clickX >= 450 && clickX <= 510 && clickY >= 260 && clickY <= 320) {
+        if (Math.hypot(husky.x - 480, husky.y - 290) < 95) {
+          openToyboxModal();
+        } else {
+          showBanner('Mene lähemmäs lelukoppaa! 🚶');
+        }
+      }
+
       // Takapiha klikkaukset
       if (interior.kind === 'backyard') {
         // Pentutarha (380, 110)
@@ -13717,6 +13921,26 @@
   }
   if (saunaPlungeBtn) {
     saunaPlungeBtn.addEventListener('click', saunaColdPlunge);
+  }
+
+  // Lelukoppa-kuuntelijat
+  if (toyboxBtnOpen) {
+    toyboxBtnOpen.addEventListener('click', openToyboxModal);
+  }
+  if (toyboxCloseBtn) {
+    toyboxCloseBtn.addEventListener('click', closeToyboxModal);
+  }
+  if (toyboxOverlay) {
+    toyboxOverlay.addEventListener('click', (e) => {
+      if (e.target === toyboxOverlay) closeToyboxModal();
+    });
+  }
+  if (throwToyBtn) {
+    throwToyBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      throwActiveToy();
+    }, { passive: false });
+    throwToyBtn.addEventListener('click', throwActiveToy);
   }
 
   // Näytä tallennetut ennätykset ja saavutukset jo aloitusruudussa

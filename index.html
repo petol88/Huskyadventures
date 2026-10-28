@@ -66,6 +66,7 @@
       </div>
       <div id="howl-btn">🐺</div>
       <div id="sprint-btn">⚡</div>
+      <div id="throw-toy-btn" title="Heitä lelu (Q)">🎾</div>
     </div>
 
     <!-- Taidonvalintanäyttö -->
@@ -367,6 +368,24 @@
       </div>
     </div>
 
+    <!-- Koirien Lelukoppa Modal -->
+    <div id="toybox-overlay" class="hidden">
+      <div id="toybox-panel">
+        <h2>🎾 Koiran Lelukoppa &amp; Noutoleikit 🧸</h2>
+        <p class="toybox-subtitle">Valitse Huskyn lempilelu seikkailuihin ja pihaleikkeihin! Heitä lelu painamalla Q tai ruudun heittonapista. Kaverit ja pennut noutavat innoissaan!</p>
+        
+        <div id="toybox-grid" class="toybox-grid"></div>
+
+        <div class="toybox-stats-footer">
+          <span>🐾 Onnistuneet noudot: <span id="toybox-fetch-count" style="color: #ffd54f; font-weight: bold;">0</span> kpl</span>
+          <span>⚡ Aktiivinen lelu: <span id="toybox-active-name" style="color: #81c784; font-weight: bold;">Tennispallo</span></span>
+        </div>
+
+        <button id="toybox-close-btn">Sulje Lelukoppa</button>
+      </div>
+    </div>
+
+
 
 
     <!-- Aloitus-/lopetusnäyttö -->
@@ -398,6 +417,7 @@
             <button id="fossils-btn-open">Fossiilit 🦖</button>
             <button id="puppies-btn-open">Pennut 🐶</button>
             <button id="sauna-btn-open">Sauna 🧖‍♂️</button>
+            <button id="toybox-btn-open">Lelut 🎾</button>
           </div>
         </div>
       </div>
