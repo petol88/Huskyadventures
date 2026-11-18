@@ -149,6 +149,14 @@
   const toyboxActiveName = document.getElementById('toybox-active-name');
   const throwToyBtn = document.getElementById('throw-toy-btn');
 
+  const smokerOverlay = document.getElementById('smoker-overlay');
+  const smokerBtnOpen = document.getElementById('smoker-btn-open');
+  const smokerCloseBtn = document.getElementById('smoker-close-btn');
+  const smokerFishBtn = document.getElementById('smoker-fish-btn');
+  const smokerSalmonCount = document.getElementById('smoker-salmon-count');
+  const smokerTotalCount = document.getElementById('smoker-total-count');
+  const smokerRecipesGrid = document.getElementById('smoker-recipes-grid');
+
 
   if (muteBtn) {
     muteBtn.addEventListener('click', () => {
@@ -222,7 +230,10 @@
       prey: ['rabbit', 'bird', 'giant_tortoise', 'marine_iguana'] },
     { id: 'palace_jungle', name: 'Palatsiviidakko', emoji: '🕌', ground: '#5a2d1d', grid: 'rgba(212, 175, 55, 0.08)',
       rockFill: '#8d5b38', rockStroke: '#d4af37', bushFill: '#2d5a27', bushEmoji: '🪷',
-      prey: ['rabbit', 'mouse', 'bird', 'monkey', 'elephant', 'peacock'] }
+      prey: ['rabbit', 'mouse', 'bird', 'monkey', 'elephant', 'peacock'] },
+    { id: 'fern_fjord', name: 'Saniaisvuonot', emoji: '🥝', ground: '#1a3c28', grid: 'rgba(80, 230, 160, 0.08)',
+      rockFill: '#3d4d42', rockStroke: '#65a77b', bushFill: '#1f6f3f', bushEmoji: '🌿',
+      prey: ['rabbit', 'bird', 'kiwi', 'tuatara'] }
   ];
   const WORLD_TOUR_DESTINATIONS = [
     { country: 'Suomi 🇫🇮', region: 'Lapin metsät', biomeId: 'forest' },
@@ -248,7 +259,8 @@
     { country: 'Pääsiäissaari 🗿', region: 'Rapa Nui', biomeId: 'foggy_peaks' },
     { country: 'Havaiji 🌋', region: 'Honolulun tulivuoret', biomeId: 'volcano' },
     { country: 'Australia 🇦🇺', region: 'Outback & Valliriutta', biomeId: 'outback' },
-    { country: 'Galápagos 🇪🇨', region: 'Tulivuorisaaristo & Kilpikonnat', biomeId: 'galapagos' }
+    { country: 'Galápagos 🇪🇨', region: 'Tulivuorisaaristo & Kilpikonnat', biomeId: 'galapagos' },
+    { country: 'Uusi-Seelanti 🇳🇿', region: 'Milford Sound & Saniaisvuonot', biomeId: 'fern_fjord' }
   ];
 
   function getDestinationForLevel(lv) {
@@ -390,6 +402,12 @@
       notes: 'Lämpimän maustetuulen puhaltaessa saavuimme mahtaviin palatsiviidakoihin! Ystävällinen aasiannorsu tervehti meitä kärsällään ja kuningasriikinkukot levittivät smaragdinsiniset pyrstönsä. Muinaiselta marmoritemppeliltä löysimme lumoavan kultaisen lootuskukan!',
       collectible: 'Kultainen Lootuskukka 🪷',
       stampStyle: 'passport-stamp-design gold'
+    },
+    'Uusi-Seelanti 🇳🇿': {
+      title: 'Uusi-Seelanti 🇳🇿',
+      notes: 'Smaragdinvihreät saniaisvuonot ja lumihuippuiset vuoret kietoutuivat usvaan Aotearoassa. Pieni pörröinen kiivilintu tepasteli saniaisten suojassa ja ikivanha tuatara katseli meitä viisaasti kolmannella silmällään. Maorien vanhin lahjoitti meille pyhän vihreän pounamu-jadeamuletin!',
+      collectible: 'Pounamu-jadeamuletti 📿',
+      stampStyle: 'passport-stamp-design green'
     }
   };
 
@@ -397,7 +415,7 @@
   const passportList = [
     'Suomi 🇫🇮', 'Sveitsi 🇨🇭', 'Egypti 🇪🇬', 'Brasilia 🇧🇷', 'Islanti 🇮🇸',
     'Louisiana 🇺🇸', 'Kanada 🇨🇦', 'Kiina 🇨🇳', 'USA 🇺🇸', 'Japani 🇯🇵', 'Norja 🇳🇴',
-    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Galápagos 🇪🇨', 'Intia 🇮🇳'
+    'Kreikka 🇬🇷', 'Malediivit 🇲🇻', 'Karibia 🇧🇸', 'Madagaskar 🇲🇬', 'Pääsiäissaari 🗿', 'Havaiji 🌋', 'Australia 🇦🇺', 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'Galápagos 🇪🇨', 'Intia 🇮🇳', 'Uusi-Seelanti 🇳🇿'
   ];
 
   function openPassport() {
@@ -587,6 +605,13 @@
       artwork: '🐘🪷',
       background: 'linear-gradient(135deg, #7c2d12, #047857)',
       letter: 'Namaste intialaisista palatsiviidakoista!\n\nTäällä historia ja luonto kohtaavat satumaisella tavalla! Aasiannorsut ovat valtavia ja kilttejä, ja riikinkukkojen pyrstöt häikäisevät auringossa! Saimme temppelin munkilta kultaisen lootuskukan, joka hehkuu rauhaa ja elinvoimaa.\n\nTerveisin,\nCompanion & Husky 🐘'
+    },
+    'Uusi-Seelanti 🇳🇿': {
+      title: 'SANIAISVUONOT & KIIVIT',
+      flag: '🇳🇿',
+      artwork: '🥝🌿',
+      background: 'linear-gradient(135deg, #064e3b, #047857)',
+      letter: 'Kia Ora Uudesta-Seelannista!\n\nTämä vihreä saarivaltio on lumoava! Juoksimme hopeasaniaisten alla ja näimme oikean kiivilinnun sekä dinosaurusten ajalta säilyneen tuataran! Saimme matkamuistoksi maagisen vihreän pounamu-amuletin.\n\nTerveisin,\nCompanion & Husky 🥝'
     }
   };
 
@@ -1422,6 +1447,7 @@
   let nearPuppyNursery = false;
   let nearSauna = false;
   let nearToybox = false;
+  let nearPier = false;
   let lotusHealTimer = 0;
   let galapagosShieldUsed = false;
   let saunaTemperature = 85;
@@ -1865,6 +1891,9 @@
         if (typeof shopData.saunaBuffTimer !== 'number') shopData.saunaBuffTimer = 0;
         if (typeof shopData.activeToy !== 'string') shopData.activeToy = 'ball';
         if (typeof shopData.fetchCount !== 'number') shopData.fetchCount = 0;
+        if (typeof shopData.smokedFishCount !== 'number') shopData.smokedFishCount = 0;
+        if (typeof shopData.smokerBuffTimer !== 'number') shopData.smokerBuffTimer = 0;
+        if (typeof shopData.smokerBuffType !== 'string') shopData.smokerBuffType = null;
       }
     } catch (e) {
       console.error("Error loading shop data, resetting:", e);
@@ -2257,6 +2286,7 @@
       new Obstacle(180, 370, 30, 'rock'),
       new Obstacle(580, 370, 30, 'rock'),
       new Obstacle(660, 260, 38, 'rock'),
+      new Obstacle(105, 260, 36, 'rock'),
     ];
     const exit = { x: 380, y: w.height - 36, r: 32 };
     
@@ -3717,13 +3747,13 @@
   // --- Apufunktiot bestiarialle ---
   function preyEmoji(kind) {
     return {
-      elephant:'🐘', peacock:'🦚', giant_tortoise:'🐢', marine_iguana:'🦎', highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
+      kiwi:'🥝', tuatara:'🦎', elephant:'🐘', peacock:'🦚', giant_tortoise:'🐢', marine_iguana:'🦎', highland_cow:'🐂', nessie:'🦕', kangaroo:'🦘', rabbit:'🐰', mouse:'🐭', squirrel:'🐿️', golden_squirrel:'🐿️✨', hedgehog:'🦔', bird:'🐦', deer:'🦌', beaver:'🦫', bat:'🦇', monkey:'🐒', mountain_goat:'🐐', coconut_crab:'🦀', seagull:'🐦', weasel:'🐹',
       bear:'🐻', wolf:'🐺', fox:'🦊', lynx:'🐱', eagle:'🦅', owl:'🦉', yeti:'❄️', scorpion:'🦂', crocodile:'🐊', panther:'🐆', shark:'🦈'
     }[kind] || '🐾';
   }
   function preyFinnish(kind) {
     return {
-      elephant:'Aasiannorsu', peacock:'Kuningasriikinkukko', giant_tortoise:'Jättiläiskilpikonna', marine_iguana:'Merileguaani', highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
+      kiwi:'Kiivilintu', tuatara:'Tuatara', elephant:'Aasiannorsu', peacock:'Kuningasriikinkukko', giant_tortoise:'Jättiläiskilpikonna', marine_iguana:'Merileguaani', highland_cow:'Ylämaankarja', nessie:'Loch Nessin Hirviö', kangaroo:'Kenguru', rabbit:'Jänis', mouse:'Hiiri', squirrel:'Orava', golden_squirrel:'Kultainen Orava', hedgehog:'Siili', bird:'Lintu', deer:'Hirvi', beaver:'Majava', bat:'Lepakko', monkey:'Apina', mountain_goat:'Vuorivuohi', coconut_crab:'Kookosrapu', seagull:'Lokki', weasel:'Kärppä',
       bear:'Karhu', wolf:'Susi', fox:'Kettu', lynx:'Ilves', eagle:'Jättikotka', owl:'Pöllö', yeti:'Jeti', scorpion:'Skorpioni', crocodile:'Krokotiili', panther:'Pantteri', shark:'Hai'
     }[kind] || kind;
   }
@@ -3940,6 +3970,9 @@
       if (shopData.saunaBuffTimer > 0) {
         collectionBonus += 15; // Saunan raikkaus ja vireys laajentaa noutosädettä
       }
+      if (shopData.unlockedStamps && shopData.unlockedStamps['Uusi-Seelanti 🇳🇿']) {
+        collectionBonus += 16; // Pounamu-amuletin pyhä noutovoima!
+      }
       if (shopData.talents && shopData.talents.magnet) {
         collectionBonus += shopData.talents.magnet * 22; // Luumagneetti talent
       }
@@ -4005,7 +4038,12 @@
           saveShopData();
           updateHud();
         } else {
-          gainXp(c.gold ? 6 : 2);
+          let bXp = c.gold ? 6 : 2;
+          if (shopData.unlockedStamps && shopData.unlockedStamps['Uusi-Seelanti 🇳🇿'] && Math.random() < 0.25) {
+            bXp *= 2;
+            spawnTextParticle(c.x, c.y, "POUNAMU TUPLA! 📿✨", "#69f0ae");
+          }
+          gainXp(bXp);
           spawnBurst(c.x, c.y,
             c.gold ? ['#ffe680', '#ffd24a', '#fff'] : ['#fff', '#e8e0d0'],
             c.gold ? 18 : 10);
@@ -4266,6 +4304,12 @@
         spawnBurst(husky.x, husky.y, ['#ffcc80', '#ffffff', '#e0f7fa'], 2);
       }
     }
+    if (shopData.smokerBuffTimer > 0) {
+      shopData.smokerBuffTimer -= dt;
+      if (Math.random() < 0.15) {
+        spawnBurst(husky.x, husky.y, ['#ffb74d', '#ff8a65', '#ffffff'], 2);
+      }
+    }
     // Kultaisen lootuskukan elinvoiman regeneraatio (Intia)
     if (shopData.unlockedStamps && shopData.unlockedStamps['Intia 🇮🇳']) {
       lotusHealTimer = (lotusHealTimer || 0) + dt;
@@ -4323,6 +4367,7 @@
     nearWishingWell = (interior.kind === 'backyard' && Math.hypot(husky.x - 580, husky.y - 370) < 55);
     nearPuppyNursery = (interior.kind === 'backyard' && Math.hypot(husky.x - 380, husky.y - 110) < 65);
     nearSauna = (interior.kind === 'backyard' && Math.hypot(husky.x - 660, husky.y - 260) < 65);
+    nearPier = (interior.kind === 'backyard' && Math.hypot(husky.x - 105, husky.y - 260) < 65);
 
     nearFriend = null;
     if (interior.kind === 'backyard' && interior.friends) {
@@ -4378,6 +4423,8 @@
         openPuppiesModal();
       } else if (nearSauna) {
         openSaunaModal();
+      } else if (nearPier) {
+        openSmokerModal();
       } else if (nearFriend) {
         interactWithFriend(nearFriend);
       }
@@ -4623,6 +4670,9 @@
     }
     if (shopData.saunaBuffTimer > 0) {
       origSpeedMul *= 1.12; // Saunan hehku antaa +12% nopeutta!
+    }
+    if (shopData.smokerBuffTimer > 0 && shopData.smokerBuffType === 'honey') {
+      origSpeedMul *= 1.15; // Hunajaloimun Loimuvoima antaa +15% nopeutta!
     }
     if (speedBoostTimer > 0) {
       perks.speedMul = origSpeedMul * 1.25;
@@ -5169,7 +5219,7 @@
             showBanner('🐒 Sait apinan kiinni ja sait aarteesi takaisin!');
           }
 
-          let pts = (p.kind === 'elephant' ? 6 : (p.kind === 'nessie' ? 6 : (p.kind === 'peacock' ? 5 : (p.kind === 'giant_tortoise' ? 5 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'marine_iguana' ? 4 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))))))) * comboMul + monkeyBonus;
+          let pts = (p.kind === 'elephant' ? 6 : (p.kind === 'nessie' ? 6 : (p.kind === 'peacock' ? 5 : (p.kind === 'tuatara' ? 5 : (p.kind === 'giant_tortoise' ? 5 : (p.kind === 'highland_cow' ? 5 : (p.kind === 'kiwi' ? 4 : (p.kind === 'marine_iguana' ? 4 : (p.kind === 'kangaroo' ? 4 : (p.kind === 'deer' ? 3 : (p.kind === 'beaver' ? 2 : 1))))))))))) * comboMul + monkeyBonus;
           if (p.kind === 'weasel') pts *= 2;
           if (p.elite) pts *= 3;
 
@@ -7137,6 +7187,121 @@
       }
       ctx.restore();
 
+      // Metsälampi, Laituri & Savustamo x: 105, y: 260
+      ctx.save();
+      // 1. Metsälampi (Pond)
+      const pondGrd = ctx.createRadialGradient(75, 265, 8, 75, 265, 62);
+      pondGrd.addColorStop(0, '#00695c');
+      pondGrd.addColorStop(0.7, '#004d40');
+      pondGrd.addColorStop(1, '#1b3b2b');
+      ctx.fillStyle = pondGrd;
+      ctx.beginPath();
+      ctx.ellipse(75, 265, 64, 48, 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#2d5a3c';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Veden kimallus / rengasaallot
+      const wavePulse = (gameTime * 1.5) % 3;
+      ctx.strokeStyle = `rgba(128, 222, 234, ${Math.max(0, 0.45 - wavePulse * 0.15)})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.ellipse(75, 265, 18 + wavePulse * 14, 12 + wavePulse * 10, 0.05, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Lumpeenlehdet ja kaislat
+      ctx.fillStyle = '#2e7d32';
+      ctx.beginPath();
+      ctx.arc(58, 245, 7, 0.4, Math.PI * 1.8);
+      ctx.lineTo(58, 245);
+      ctx.fill();
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🪷', 58, 242);
+
+      // Kaislikko rannalla
+      ctx.font = '13px sans-serif';
+      ctx.fillText('🌾', 40, 285);
+      ctx.fillText('🌾', 50, 298);
+
+      // 2. Puulaituri (Wooden Pier)
+      ctx.fillStyle = '#5d4037';
+      ctx.fillRect(80, 248, 48, 26);
+      ctx.strokeStyle = '#3e2723';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(80, 248, 48, 26);
+      // Laiturin lankut
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      for (let lx = 88; lx < 128; lx += 8) {
+        ctx.beginPath(); ctx.moveTo(lx, 248); ctx.lineTo(lx, 274); ctx.stroke();
+      }
+      // Laiturin paalut
+      ctx.fillStyle = '#3e2723';
+      ctx.beginPath();
+      ctx.arc(82, 250, 3.5, 0, Math.PI * 2);
+      ctx.arc(82, 272, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Onkivapa ja pelastusrengas
+      ctx.font = '12px sans-serif';
+      ctx.fillText('🎣', 95, 244);
+      ctx.fillText('🛟', 122, 252);
+
+      // 3. Savustuspönttö (Fish Smoker)
+      ctx.fillStyle = '#4e342e';
+      ctx.fillRect(124, 280, 22, 28);
+      ctx.strokeStyle = '#271c19';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(124, 280, 22, 28);
+      // Rautavanteet
+      ctx.strokeStyle = '#212121';
+      ctx.beginPath();
+      ctx.moveTo(124, 287); ctx.lineTo(146, 287);
+      ctx.moveTo(124, 301); ctx.lineTo(146, 301);
+      ctx.stroke();
+      // Kansi ja piippu
+      ctx.fillStyle = '#37474f';
+      ctx.beginPath();
+      ctx.moveTo(122, 280); ctx.lineTo(135, 272); ctx.lineTo(148, 280);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillRect(133, 265, 4, 8);
+
+      // Savustamon nouseva hento savu
+      for (let i = 0; i < 3; i++) {
+        const sPhase = (gameTime * 2.2 + i * 1.1) % 3.0;
+        const sAlpha = Math.max(0, 0.4 - sPhase * 0.12);
+        const sy = 262 - sPhase * 14;
+        const sx = 135 + Math.sin(gameTime * 3 + i) * 5;
+        ctx.fillStyle = `rgba(187, 222, 251, ${sAlpha})`;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3 + sPhase * 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Otsikko
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillStyle = '#80deea';
+      ctx.textAlign = 'center';
+      ctx.fillText('Laituri & Savustamo 🎣🐟', 105, 230);
+      ctx.restore();
+
+      if (nearPier) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.fillRect(105 - 110, 318, 220, 24);
+        ctx.strokeStyle = '#80deea';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(105 - 110, 318, 220, 24);
+        ctx.fillStyle = '#e0f7fa';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Paina E tai klikkaa: Laituri & Savustamo 🎣🐟', 105, 330);
+        ctx.restore();
+      }
+
       // Pihasauna x: 660, y: 260
       ctx.save();
       // Hirsiseinät
@@ -7965,7 +8130,7 @@
     function generateWorldMapDeco(mode) {
       worldMapDeco = [];
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 8 : 13;
+      const ROWS = isIsland ? 9 : 13;
       const PANEL_H = ROWS * 100;
       const PANEL_W = 480;
 
@@ -8049,7 +8214,7 @@
 
     function generateWorldMap(mode) {
       const isIsland = (mode === 'island');
-      const ROWS = isIsland ? 8 : 13;
+      const ROWS = isIsland ? 9 : 13;
       const COLS = 3;
       const PANEL_W = 480;
       const PANEL_H = ROWS * 100;
@@ -9290,7 +9455,8 @@
       'Australia 🇦🇺': { emoji: '🪃', name: 'Kultainen Bumerangi', desc: 'Löydä punaiselle hiekalle kätketty muinainen bumerangi' },
       'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿': { emoji: '🎶', name: 'Kultainen Säkkipilli', desc: 'Löydä vanhojen linnanraunioiden kätköistä kultainen säkkipilli' },
       'Galápagos 🇪🇨': { emoji: '🛡️', name: 'Muinainen Kilvenkappale', desc: 'Löydä laavasaaren rannalta muinainen jättiläiskilpikonnan suojakilpi' },
-      'Intia 🇮🇳': { emoji: '🪷', name: 'Kultainen Lootuskukka', desc: 'Etsi palatsin lummelammikolta muinainen pyhä kultalootus' }
+      'Intia 🇮🇳': { emoji: '🪷', name: 'Kultainen Lootuskukka', desc: 'Etsi palatsin lummelammikolta muinainen pyhä kultalootus' },
+      'Uusi-Seelanti 🇳🇿': { emoji: '📿', name: 'Pyhä Pounamu-amuletti', desc: 'Löydä saniaisvuonojen kätköistä vihreä jadeamuletti' }
     };
     
     const q = questDb[dest.country];
@@ -10108,6 +10274,8 @@
     { id: 'marine_iguana', name: 'Merileguaani', emoji: '🦎', desc: 'Meren aalloissa uiva ja mustilla laavakallioilla lekotteleva leguaani, joka puhaltaa suolasuihkuja.' },
     { id: 'elephant', name: 'Aasiannorsu', emoji: '🐘', desc: 'Palatsiviidakon lempeä jättiläinen. Heiluttaa suuria korviaan, suihkuttaa vettä kärsällään ja antaa eksoottisia hedelmiä.' },
     { id: 'peacock', name: 'Kuningasriikinkukko', emoji: '🦚', desc: 'Häikäisevän kaunis smaragdinsininen lintu, joka levittää kimmeltävän silmähöyhenviuhkan.' },
+    { id: 'kiwi', name: 'Kiivilintu', emoji: '🥝', desc: 'Uuden-Seelannin pörröinen siivetön lintu. Tepastelee maassa haistellen maaperää pitkällä nokallaan ja kääntyy salamannopeasti!' },
+    { id: 'tuatara', name: 'Tuatara', emoji: '🦎', desc: 'Esihistoriallinen matelija dinosaurusten ajalta. Sillä on maaginen kolmas silmä ja kivenkova naamiointi!' },
   ];
 
   const CODEX_PREDATORS = [
@@ -10528,7 +10696,9 @@
     { id: 'galapagosExplorer', name: 'Saariston Tutkija', desc: 'Vieraile Galápagosin tulivuorisaarilla', target: 1, reward: 20, icon: '🐢' },
     { id: 'saunaMaster', name: 'Löylymestari', desc: 'Heitä 20 kauhallista löylyä mökin pihasaunassa', target: 20, reward: 25, icon: '🧖‍♂️' },
     { id: 'indiaExplorer', name: 'Viidakon Valtias', desc: 'Vieraile Intian palatsiviidakoissa ja temppeleillä', target: 1, reward: 20, icon: '🐘' },
-    { id: 'fetchMaster', name: 'Noutomestari', desc: 'Heitä ja nouda leluja 15 kertaa kaverisi kanssa', target: 15, reward: 25, icon: '🎾' }
+    { id: 'fetchMaster', name: 'Noutomestari', desc: 'Heitä ja nouda leluja 15 kertaa kaverisi kanssa', target: 15, reward: 25, icon: '🎾' },
+    { id: 'nzExplorer', name: 'Vuonojen Vaeltaja', desc: 'Vieraile Uuden-Seelannin saniaisvuonoilla', target: 1, reward: 20, icon: '🥝' },
+    { id: 'smokerMaster', name: 'Savumestari', desc: 'Valmista 5 herkullista savukalaa mökin savustamossa', target: 5, reward: 25, icon: '🐟' }
   ];
 
   function getAchievementProgress(achId) {
@@ -10594,6 +10764,12 @@
     }
     if (achId === 'fetchMaster') {
       return shopData.fetchCount || 0;
+    }
+    if (achId === 'nzExplorer') {
+      return (shopData.unlockedStamps && shopData.unlockedStamps['Uusi-Seelanti 🇳🇿']) ? 1 : 0;
+    }
+    if (achId === 'smokerMaster') {
+      return shopData.smokedFishCount || 0;
     }
     return 0;
   }
@@ -12252,6 +12428,7 @@
     if (countryName === 'Skotlanti 🏴󠁧󠁢󠁳󠁣󠁴󠁿') return 'finland';
     if (countryName === 'Galápagos 🇪🇨') return 'iceland';
     if (countryName === 'Intia 🇮🇳') return 'brazil';
+    if (countryName === 'Uusi-Seelanti 🇳🇿') return 'finland';
     return 'default';
   }
 
@@ -13174,6 +13351,184 @@
   window.selectToy = selectToy;
   window.throwActiveToy = throwActiveToy;
 
+  // --- Mökin Laituri & Kalasavustamo 🎣🐟💨 ---
+  const SMOKER_RECIPES = [
+    {
+      id: 'traditional',
+      name: 'Perinteinen Savulohi 🐟💨',
+      desc: 'Leppälastuilla hitaasti savustettu mehevä lohifilee! Täyttää elämät ja antaa +1 lisäsydämen!',
+      req: { salmon: 1 },
+      action: () => {
+        lives = Math.min(maxLives + 1, lives + 2);
+        updateHud();
+        showBanner('🐟 Perinteinen savulohi nautittu! Kaikki sydämet täytetty ja sait +1 lisäsydämen! ❤️✨');
+      }
+    },
+    {
+      id: 'honey_smoke',
+      name: 'Hunajaloimulohi 🍯🐟',
+      desc: 'Metsähunajalla sivelty loimulohi. Antaa Loimuvoiman: +15 % liikenopeus seikkailuun 5 minuutiksi!',
+      req: { salmon: 1, honey: 1 },
+      action: () => {
+        shopData.smokerBuffTimer = 300;
+        shopData.smokerBuffType = 'honey';
+        showBanner('🍯 Hunajaloimulohi antoi Loimuvoiman! +15% nopeutta 5 minuutiksi! ⚡');
+      }
+    },
+    {
+      id: 'herbal_smoke',
+      name: 'Yrttinen Savukala 🌿🐟',
+      desc: 'Metsämustikoilla maustettu savusaalis. Antaa Viisaan Vaiston: +25 % XP saaliista 5 minuutiksi!',
+      req: { salmon: 1, blueberry: 1 },
+      action: () => {
+        shopData.smokerBuffTimer = 300;
+        shopData.smokerBuffType = 'herbal';
+        showBanner('🌿 Yrttinen savukala antoi Viisaan Vaiston! +25% XP-bonus 5 minuutiksi! 🎓✨');
+      }
+    },
+    {
+      id: 'golden_smoke',
+      name: 'Kultaloimutus 🌟🐟',
+      desc: 'Mestarikokin kultainen erikoisloimutus. Antaa +3 💎 ja tekee kaikista 5 pennusta 100% onnellisia!',
+      req: { salmon: 2, bones: 4 },
+      action: () => {
+        shopData.totalGems += 3;
+        if (shopData.puppyHappiness) {
+          ['lumi', 'kipina', 'hilla', 'salama', 'toivo'].forEach(p => shopData.puppyHappiness[p] = 100);
+        }
+        showBanner('🌟 Kultaloimutus valmistettu! +3 💎 ja kaikki pentutarhan pennut ovat 100% onnellisia! 🐶❤️');
+      }
+    }
+  ];
+
+  function openSmokerModal() {
+    running = false;
+    renderSmokerUI();
+    if (smokerOverlay) {
+      smokerOverlay.classList.remove('hidden');
+    }
+    Audio.play('skill');
+  }
+
+  function closeSmokerModal() {
+    if (smokerOverlay) {
+      smokerOverlay.classList.add('hidden');
+    }
+    husky.y += 15;
+    resumeGame();
+  }
+
+  function renderSmokerUI() {
+    if (!shopData.ingredients) shopData.ingredients = {};
+    const salmons = shopData.ingredients.salmon || 0;
+    const smokedCount = shopData.smokedFishCount || 0;
+
+    if (smokerSalmonCount) smokerSalmonCount.textContent = `${salmons}`;
+    if (smokerTotalCount) smokerTotalCount.textContent = `${smokedCount}`;
+
+    if (!smokerRecipesGrid) return;
+
+    smokerRecipesGrid.innerHTML = SMOKER_RECIPES.map(rec => {
+      let canCook = true;
+      const reqList = Object.entries(rec.req).map(([k, needed]) => {
+        let has = 0;
+        let name = k;
+        if (k === 'salmon') { has = salmons; name = '🐟 Lohi'; }
+        else if (k === 'honey') { has = shopData.ingredients.honey || 0; name = '🍯 Hunaja'; }
+        else if (k === 'blueberry') { has = shopData.ingredients.blueberry || 0; name = '🫐 Mustikka'; }
+        else if (k === 'bones') { has = shopData.bones || 0; name = '🦴 Luut'; }
+
+        if (has < needed) canCook = false;
+        const color = has >= needed ? '#a5d6a7' : '#ef9a9a';
+        return `<span style="color: ${color}; margin-right: 6px;">${name}: ${has}/${needed}</span>`;
+      }).join('');
+
+      return `
+        <div class="smoker-card">
+          <div class="smoker-card-title">${rec.name}</div>
+          <div class="smoker-card-desc">${rec.desc}</div>
+          <div class="smoker-card-req">Tarvitaan: ${reqList}</div>
+          <button class="smoker-cook-btn" ${canCook ? '' : 'disabled'} onclick="cookSmokerRecipe('${rec.id}')">
+            Savusta 🐟💨
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function smokerFishFromDock() {
+    Audio.play('catch');
+    const roll = Math.random();
+    let caughtName = 'Mehevä Lohi 🐟';
+    let gainedSalmon = 1;
+    let gainedXp = 15;
+    let burstColors = ['#64b5f6', '#4fc3f7', '#ffffff'];
+
+    if (roll < 0.20) {
+      caughtName = 'Kultainen Karppi 🌟🐟';
+      gainedSalmon = 2;
+      gainedXp = 35;
+      shopData.totalGems += 1;
+      burstColors = ['#ffd700', '#ffa000', '#ffffff'];
+      showBanner(`🎣 MAHTAVA SAALIS LAITURILTA: ${caughtName}! +2 Lohta, +1 💎 ja +35 XP!`);
+      Audio.play('goldbone');
+    } else if (roll < 0.45) {
+      caughtName = 'Täplikäs Taimen 🐟✨';
+      gainedSalmon = 1;
+      gainedXp = 25;
+      burstColors = ['#81c784', '#64b5f6', '#ffffff'];
+      showBanner(`🎣 Nappasit laiturilta kalan: ${caughtName}! +1 Lohi ja +25 XP!`);
+    } else {
+      showBanner(`🎣 Nappasit laiturilta kalan: ${caughtName}! +1 Lohi ja +15 XP!`);
+    }
+
+    if (!shopData.ingredients) shopData.ingredients = {};
+    shopData.ingredients.salmon = (shopData.ingredients.salmon || 0) + gainedSalmon;
+    shopData.achievements.fishCaughtCount = (shopData.achievements.fishCaughtCount || 0) + 1;
+    addXp(gainedXp);
+    saveShopData();
+    checkAchievements();
+    renderSmokerUI();
+    spawnBurst(105, 260, burstColors, 24);
+  }
+
+  function cookSmokerRecipe(recId) {
+    const rec = SMOKER_RECIPES.find(r => r.id === recId);
+    if (!rec) return;
+
+    if (!shopData.ingredients) shopData.ingredients = {};
+    for (const [k, needed] of Object.entries(rec.req)) {
+      if (k === 'bones') {
+        if ((shopData.bones || 0) < needed) { showBanner('Sinulla ei ole tarpeeksi luita! ❌'); return; }
+      } else {
+        if ((shopData.ingredients[k] || 0) < needed) { showBanner('Sinulta puuttuu raaka-aineita! ❌'); return; }
+      }
+    }
+
+    // Kuluta ainekset
+    for (const [k, needed] of Object.entries(rec.req)) {
+      if (k === 'bones') {
+        shopData.bones -= needed;
+      } else {
+        shopData.ingredients[k] -= needed;
+      }
+    }
+
+    shopData.smokedFishCount = (shopData.smokedFishCount || 0) + 1;
+    rec.action();
+    saveShopData();
+    checkAchievements();
+    renderSmokerUI();
+    Audio.play('legendary');
+    spawnBurst(husky.x, husky.y, ['#ffb74d', '#ff7043', '#ffffff', '#ffd54f'], 30);
+  }
+
+  window.openSmokerModal = openSmokerModal;
+  window.closeSmokerModal = closeSmokerModal;
+  window.cookSmokerRecipe = cookSmokerRecipe;
+  window.smokerFishFromDock = smokerFishFromDock;
+
+
 
   window.closePuppiesModal = closePuppiesModal;
   window.setActivePuppy = setActivePuppy;
@@ -13714,6 +14069,14 @@
             showBanner('Mene lähemmäs pihasaunaa! 🚶');
           }
         }
+        // Laituri & Savustamo (105, 260)
+        else if (clickX >= 35 && clickX <= 170 && clickY >= 210 && clickY <= 330) {
+          if (Math.hypot(husky.x - 105, husky.y - 260) < 115) {
+            openSmokerModal();
+          } else {
+            showBanner('Mene lähemmäs laituria ja savustamoa! 🚶');
+          }
+        }
         // Nuotio (380, 240)
         if (Math.hypot(clickX - 380, clickY - 240) < 50) {
           if (Math.hypot(husky.x - 380, husky.y - 240) < 95) {
@@ -13941,6 +14304,22 @@
       throwActiveToy();
     }, { passive: false });
     throwToyBtn.addEventListener('click', throwActiveToy);
+  }
+
+  // Laituri & Savustamo -kuuntelijat
+  if (smokerBtnOpen) {
+    smokerBtnOpen.addEventListener('click', openSmokerModal);
+  }
+  if (smokerCloseBtn) {
+    smokerCloseBtn.addEventListener('click', closeSmokerModal);
+  }
+  if (smokerOverlay) {
+    smokerOverlay.addEventListener('click', (e) => {
+      if (e.target === smokerOverlay) closeSmokerModal();
+    });
+  }
+  if (smokerFishBtn) {
+    smokerFishBtn.addEventListener('click', smokerFishFromDock);
   }
 
   // Näytä tallennetut ennätykset ja saavutukset jo aloitusruudussa

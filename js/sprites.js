@@ -2261,7 +2261,223 @@ const Sprites = (() => {
     ctx.fill();
   }
 
-  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy, giant_tortoise, marine_iguana, elephant, peacock };
+    // --- Uuden-Seelannin Kiivilintu (Kiwi Bird) 🥝 ---
+  function kiwi(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.52, r * 0.85, r * 0.32, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // 2 tukevaa jalkaa ja kynnet
+    const legSwing = Math.sin(swing * 3.8) * 0.35;
+    const legCol = '#c48b71';
+    for (let i = -1; i <= 1; i += 2) {
+      ctx.save();
+      const lx = (i === -1 ? -r * 0.2 : r * 0.2);
+      ctx.translate(lx, r * 0.35);
+      ctx.rotate(i * legSwing);
+      ctx.strokeStyle = legCol;
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, r * 0.32);
+      // Varpaat
+      ctx.lineTo(r * 0.18, r * 0.38);
+      ctx.moveTo(0, r * 0.32);
+      ctx.lineTo(-r * 0.12, r * 0.38);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Päärynänmuotoinen pörröinen keho
+    ctx.save();
+    const bodyGrad = ctx.createRadialGradient(-r * 0.1, -r * 0.1, r * 0.15, 0, 0, r * 0.95);
+    bodyGrad.addColorStop(0, '#8c5e3c');
+    bodyGrad.addColorStop(0.6, '#5a381e');
+    bodyGrad.addColorStop(1, '#3b2210');
+    ctx.fillStyle = bodyGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.88, r * 0.72, 0.08, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Karvamaiset pörröhöyhenet (kiivin erityispiirre)
+    ctx.strokeStyle = '#38200e';
+    ctx.lineWidth = 1.2;
+    for (let a = 0; a < 6; a++) {
+      const ang = (a / 6) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(ang) * r * 0.75, Math.sin(ang) * r * 0.6);
+      ctx.lineTo(Math.cos(ang) * r * 0.95, Math.sin(ang) * r * 0.78);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Pitkä kapea kaartuva nokka ja kuono
+    const hx = r * 0.58;
+    const hy = -r * 0.12;
+    const peckAngle = (e && e.moving ? Math.sin(swing * 3.8) * 0.15 : 0.05);
+
+    ctx.save();
+    ctx.translate(hx, hy);
+    ctx.rotate(peckAngle);
+
+    // Nokka
+    ctx.strokeStyle = '#fed7aa';
+    ctx.fillStyle = '#ffedd5';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(r * 0.65, r * 0.15, r * 1.15, r * 0.42);
+    ctx.stroke();
+
+    // Sieraimet nokan kärjessä (kiivillä on maailman tarkin haju nokan päässä!)
+    ctx.fillStyle = '#7c2d12';
+    ctx.beginPath();
+    ctx.arc(r * 1.14, r * 0.42, 1.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Tuntokarvat nokan tyvessä
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(r * 0.08, -r * 0.08); ctx.lineTo(r * 0.28, -r * 0.22);
+    ctx.moveTo(r * 0.08, r * 0.08); ctx.lineTo(r * 0.28, r * 0.24);
+    ctx.stroke();
+
+    // Pieni tumma nappisilmä
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(-r * 0.08, -r * 0.12, r * 0.08, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(-r * 0.06, -r * 0.14, r * 0.03, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // --- Uuden-Seelannin Tuatara (Sphenodon punctatus) 🦎 ---
+  function tuatara(ctx, r, swing, e) {
+    // Varjo
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+    ctx.beginPath();
+    ctx.ellipse(0, r * 0.4, r * 1.15, r * 0.38, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Aaltoileva sahalaitainen häntä
+    const tailSway = Math.sin(swing * 2.5) * 0.25;
+    ctx.save();
+    ctx.translate(-r * 0.6, r * 0.08);
+    ctx.rotate(tailSway);
+    ctx.fillStyle = '#374151';
+    ctx.beginPath();
+    ctx.moveTo(0, -r * 0.18);
+    ctx.quadraticCurveTo(-r * 0.7, 0, -r * 1.35, r * 0.15);
+    ctx.quadraticCurveTo(-r * 0.65, r * 0.25, 0, r * 0.18);
+    ctx.closePath();
+    ctx.fill();
+
+    // Hännän piikit
+    ctx.fillStyle = '#94a3b8';
+    for (let i = 0; i < 4; i++) {
+      const tx = -r * 0.28 * (i + 1);
+      ctx.beginPath();
+      ctx.moveTo(tx - 3, -r * 0.08 + i * 2);
+      ctx.lineTo(tx, -r * 0.22 + i * 2);
+      ctx.lineTo(tx + 3, -r * 0.08 + i * 2);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // 4 raajaa kynsillä
+    const legSwing = Math.sin(swing * 2.2) * 0.28;
+    ctx.fillStyle = '#475569';
+    // Takaraajat
+    ctx.save();
+    ctx.translate(-r * 0.32, r * 0.28);
+    ctx.rotate(-legSwing);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.18, r * 0.28, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Eturaajat
+    ctx.save();
+    ctx.translate(r * 0.35, r * 0.3);
+    ctx.rotate(legSwing);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.18, r * 0.28, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Keho
+    const bodyGrad = ctx.createLinearGradient(0, -r * 0.45, 0, r * 0.45);
+    bodyGrad.addColorStop(0, '#475569');
+    bodyGrad.addColorStop(0.5, '#334155');
+    bodyGrad.addColorStop(1, '#1e293b');
+    ctx.fillStyle = bodyGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.82, r * 0.48, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Vaaleat suomupisteet
+    ctx.fillStyle = 'rgba(203, 213, 225, 0.45)';
+    for (let s = -2; s <= 2; s++) {
+      ctx.beginPath();
+      ctx.arc(s * r * 0.22, -r * 0.1 + (s % 2) * 4, 1.8, 0, Math.PI * 2);
+      ctx.arc(s * r * 0.22, r * 0.15 - (s % 2) * 4, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Selkäharjan piikit (tuataralle ominainen piikkirivi)
+    ctx.fillStyle = '#e2e8f0';
+    for (let p = -3; p <= 3; p++) {
+      const px = p * r * 0.16;
+      const py = -r * 0.42;
+      ctx.beginPath();
+      ctx.moveTo(px - r * 0.04, py + r * 0.08);
+      ctx.lineTo(px, py - r * 0.14);
+      ctx.lineTo(px + r * 0.04, py + r * 0.08);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Pää
+    const hx = r * 0.68, hy = -r * 0.14;
+    ctx.fillStyle = '#475569';
+    ctx.beginPath();
+    ctx.ellipse(hx, hy, r * 0.38, r * 0.3, 0.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Kolmas silmä (parietal eye) päälaella!
+    ctx.fillStyle = '#38bdf8';
+    ctx.beginPath();
+    ctx.arc(hx - r * 0.05, hy - r * 0.24, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(hx - r * 0.05, hy - r * 0.24, 0.8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Silmä
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.08, hy - r * 0.08, r * 0.075, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(hx + r * 0.09, hy - r * 0.08, r * 0.04, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const drawers = { husky, rabbit, mouse, squirrel, golden_squirrel: squirrel, hedgehog, bear, wolf, bird, fox, lynx, eagle, deer, beaver, bat, owl, yeti, scorpion, crocodile, panther, monkey, mountain_goat, campfire, leafpile, chest, spikes, portal, coconut_crab, seagull, shark, weasel, spider, kangaroo, highland_cow, nessie, puppy, giant_tortoise, marine_iguana, elephant, peacock, kiwi, tuatara };
 
 
   function drawHat(ctx, r, hatId) {
